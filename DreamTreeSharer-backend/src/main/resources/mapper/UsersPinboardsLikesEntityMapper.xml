@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ITIS.DreamTreeSharer.dao.UsersPinboardsLikesDao">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.ITIS.DreamTreeSharer.entity.UsersPinboardsLikesEntity">
+        <id column="upl_id" property="uplId" />
+        <result column="user_id" property="userId" />
+        <result column="pinboard_id" property="pinboardId" />
+        <result column="up_create_time" property="upCreateTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        upl_id, user_id, pinboard_id, up_create_time
+    </sql>
+
+</mapper>
