@@ -1,100 +1,18 @@
-# 前端设计
-
-## 前端环境搭建
-
-### 安装 node.js
-
-https://nodejs.org/en/download/
-
-[安装与卸载教程 - Windows下完全卸载node.js并安装node.js的多版本管理工具nvm-windows](https://blog.csdn.net/lewky_liu/article/details/87959839)
-
-[nvm-windows github 地址](https://github.com/coreybutler/nvm-windows)
-
-### 解决 npm 下载慢的问题
-
-```shell
-# 使用此命令
-npm install cnpm -g
-
-# 或使用如下语句解决 npm 速度慢的问题（建议）
-npm install --registry=https://registry.npm.taobao.org/
-```
-
-### 安装 npm 管理器 nrm
-
-```shell
-npm install nrm -g
-
-# 使用 nrm ls 查看已安装的 npm 包
-nrm ls
-
-# 使用 nrm use [镜像名]命令来使用镜像
-nrm use taobao
-```
-
-### 使用 nrm ls 报错
-
-[nrm报错 [ERR_INVALID_ARG_TYPE] 解决方法]:(https://blog.csdn.net/S_aitama/article/details/113706339)
-
-
-
-### 安装 vue/cli
-
-```shell
-npm install -g @vue/cli
-
-# 安装完后检查是否成功
-vue --version
-```
-
-### 启动创建好的 vue 项目
-
-```shell
-# 进入项目根目录下
-npm run serve
-```
-
-
-
-## 项目结构说明
-
-<img src="C:\Users\LCX\AppData\Roaming\Typora\typora-user-images\image-20210331165926659.png" alt="image-20210331165926659" style="zoom:80%;" />
-
-node_modules: 项目使用到的一些依赖
-
-public: 开发时基本用不到，因为 vue 基本是组件开发，页面都是动态生成的
-
-src: 项目源码
-
-src-assets: 专门用于放一些资源
-
-src-components: 项目组件
-
-src-router: 路由目录
-
-src-views: 页面目录
-
-app.vue: 
-
-main.js: 项目入口
-
-bable.config.js: 打包时，将 ES6 语法转换为 ES5 语法
-
-package-lock.json: 
-
-package.json:  项目配置文件
-
-README.md: 项目说明
-
-
-
 # 后端设计
+
+## 参考学习网站
+
+[全套完整版】2021最新SpringBoot+Vue前后端分离项目实战-在线智能办公系统，前后端分离项目](https://www.bilibili.com/video/BV1ar4y1K7qx)
+
+
 
 ## 数据库设计
 
-[MySQL 日期类型及默认设置]: https://blog.csdn.net/gxy_2016/article/details/53436865
-[Mysql中设置默认时间为当前值]: https://blog.csdn.net/cherry_xiu/article/details/80235042
-[开发日志：mySQL创建表时添加表和列的]: https://blog.csdn.net/kaidishi/article/details/19068043
+[MySQL 日期类型及默认设置](https://blog.csdn.net/gxy_2016/article/details/53436865)
+
+[Mysql中设置默认时间为当前值](https://blog.csdn.net/cherry_xiu/article/details/80235042)
+
+[开发日志：mySQL创建表时添加表和列的](https://blog.csdn.net/kaidishi/article/details/19068043)
 
 ### 创建 users 表
 
@@ -210,7 +128,7 @@ FOREIGN KEY(pinboard_id) REFERENCES pinboards(pinboard_id)
 
 ## 搭建 springboot web 项目
 
-[搭建参考]: https://www.bilibili.com/video/BV1XK4y1W7jB?p=73&spm_id_from=pageDriver
+[搭建参考](https://www.bilibili.com/video/BV1XK4y1W7jB?p=73&spm_id_from=pageDriver)
 
 ### 导入项目所需依赖
 
@@ -355,7 +273,7 @@ public class DreamTreeSharerApp {
 
 #### 导入依赖
 
-[代码生成器-mybatis官网参考]: https://baomidou.com/guide/generator.html#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B
+[代码生成器-mybatis官网参考](https://baomidou.com/guide/generator.html#%E4%BD%BF%E7%94%A8%E6%95%99%E7%A8%8B)
 
 
 
@@ -935,3 +853,39 @@ public class CaptchaController {
 }
 ```
 
+## 添加七牛云对象存储功能（图片存储）- 获取token
+
+[七牛云上传下载操作指南](https://developer.qiniu.com/kodo/kb/1336/upload-download-instructions)
+
+[Java SDK](https://developer.qiniu.com/linking/6279/linking-java-sdk#install-by-maven)
+
+### 生成一个 bucket
+
+[创建 Bucket](https://developer.qiniu.com/kodo/1382/mkbucketv3)
+
+创建前需要进行实名认证
+
+创建的bucket名字：`itisummer-huanan-bucket`
+
+<img src="C:\Users\LCX\AppData\Roaming\Typora\typora-user-images\image-20210416152912631.png" alt="image-20210416152912631" style="zoom:80%;" />
+
+创建 bucket 成功
+
+<img src="C:\Users\LCX\AppData\Roaming\Typora\typora-user-images\image-20210416164640694.png" alt="image-20210416164640694" style="zoom:80%;" />
+
+### 添加 maven 依赖
+
+```xml
+<!-- 七牛云 Java sdk-->
+<dependency>
+    <groupId>com.qiniu</groupId>
+    <artifactId>qiniu-java-sdk</artifactId>
+    <version>[7.2.0, 7.2.99]</version>
+</dependency>
+```
+
+### 编写获取 token
+
+[java调用qiniu七牛云空间](https://blog.csdn.net/visket2008/article/details/77164233)
+
+<img src="qrne6et6u.hn-bkt.clouddn.com/test.jpg"/>

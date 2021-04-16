@@ -2,7 +2,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-<!--    子项目依赖父项目-->
+    <!--    子项目依赖父项目-->
     <parent>
         <groupId>com.ITIS</groupId>
         <artifactId>DreamTreeSharer</artifactId>
@@ -18,20 +18,20 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        lombok 自动注入-->
+        <!--        lombok 自动注入-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional>
         </dependency>
-<!--        a driver that implements the Java Database Connectivity (JDBC) API -->
+        <!--        a driver that implements the Java Database Connectivity (JDBC) API -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.baomidou/mybatis-plus-boot-starter -->
-<!--        代码逆向生成-->
+        <!--        代码逆向生成-->
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
@@ -66,5 +66,12 @@
             <artifactId>kaptcha</artifactId>
             <version>0.0.9</version>
         </dependency>
+        <!-- 七牛云 Java sdk-->
+        <dependency>
+            <groupId>com.qiniu</groupId>
+            <artifactId>qiniu-java-sdk</artifactId>
+            <version>[7.2.0, 7.2.99]</version>
+        </dependency>
+
     </dependencies>
 </project>
