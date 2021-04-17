@@ -27,4 +27,5 @@ public class Message {
     public static final String ERR_NO_PERMISSION = "权限不够！";
     public static final String ERR_NOT_LOGIN = "尚未登陆，请先登录！";
     public static final String ERR_CAPTCHA = "验证码输入错误！";
+    public static final String ERR_WRONG_KEY = "错误的文件名！";
 }

@@ -29,8 +29,8 @@ public class QiniuToken {
 
     /** 基础图片空间 写自己的 */
     public static final String CLOUD_BUCKET = "itisummer-huanan-bucket";
-    /** 基础空间域名 写自己的 */
-    public static final String CLOUD_URL = "qrne6et6u.hn-bkt.clouddn.com";
+//    /** 基础空间域名 写自己的 */
+//    public static final String CLOUD_URL = "qrne6et6u.hn-bkt.clouddn.com";
 
 //    /** 产品空间  写自己的 */
 //    public static final String PRODUCT_BUCKET = "cloud-product";
@@ -52,7 +52,7 @@ public class QiniuToken {
     /**
      * Description:自定义token返回结果
      * @param key 文件名
-     * @return
+     * @return 返回自定义的 token
      * @author LCX
      * @Date 2021年4月16日16点13分
      */
@@ -128,14 +128,14 @@ public class QiniuToken {
     }
 
 
-    public static void main(String[] args) {
-        //7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:O3ujY6Ocqj46oRDSqldNq0cDnRQ=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwicmV0dXJuQm9keSI6IntcImtleVwiOlwiJChrZXkpXCIsXCJjb21cIjpcIiQoeDpjb20pXCIsXCJoYXNoXCI6XCIkKGV0YWcpXCIsXCJidWNrZXRcIjpcIiQoYnVja2V0KVwiLFwiZnNpemVcIjokKGZzaXplKX0iLCJkZWFkbGluZSI6MTYxODU2NTQ1Mn0=
-//        System.out.println(getCustomToken("itisummer-huanan-bucket","test.jpg"));
-
-        //7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:-os046WHNR7zxhqDSo1GOwqYKFk=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwiZGVhZGxpbmUiOjE2MTg1NzU5OTZ9
-        System.out.println(getBaseToken("itisummer-huanan-bucket","test.jpg"));
-        //remove("claim_guarantee.docx");
-    }
+//    public static void main(String[] args) {
+//        //7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:O3ujY6Ocqj46oRDSqldNq0cDnRQ=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwicmV0dXJuQm9keSI6IntcImtleVwiOlwiJChrZXkpXCIsXCJjb21cIjpcIiQoeDpjb20pXCIsXCJoYXNoXCI6XCIkKGV0YWcpXCIsXCJidWNrZXRcIjpcIiQoYnVja2V0KVwiLFwiZnNpemVcIjokKGZzaXplKX0iLCJkZWFkbGluZSI6MTYxODU2NTQ1Mn0=
+////        System.out.println(getCustomToken("itisummer-huanan-bucket","test.jpg"));
+//
+////        7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:U_0slxZN1g4Uj3ClddpoSnaGS4s=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwiZGVhZGxpbmUiOjE2MTg2MjY1OTl9
+//        System.out.println(getBaseToken("itisummer-huanan-bucket","test.jpg"));
+//        //remove("claim_guarantee.docx");
+//    }
 
 }
 

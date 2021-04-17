@@ -4,11 +4,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -117,8 +115,8 @@ public class JwtTokenUtil {
      * @return
      */
     private Date generateExpirationDate() {
-        //失效时间 =  当前系统的时间 + 配置的有效时间 24h
-        return new Date(System.currentTimeMillis() + expiration*1000);
+        //失效时间 =  当前系统的时间 + 配置的有效时间 10h
+        return new Date(System.currentTimeMillis() + expiration*10000);
     }
 
     /**
