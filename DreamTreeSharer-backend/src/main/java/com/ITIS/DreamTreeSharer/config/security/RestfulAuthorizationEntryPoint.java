@@ -27,7 +27,7 @@ public class RestfulAuthorizationEntryPoint implements AuthenticationEntryPoint 
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        CRModel model = CRModel.error(StatusCode.WARN,Message.ERR_NOT_LOGIN);
+        CRModel model = CRModel.warning(StatusCode.WAR_USER_NOT_LOGIN,Message.WAR_NOT_LOGIN,null);
         out.write(new ObjectMapper().writeValueAsString(model));
         out.flush();
         out.close();

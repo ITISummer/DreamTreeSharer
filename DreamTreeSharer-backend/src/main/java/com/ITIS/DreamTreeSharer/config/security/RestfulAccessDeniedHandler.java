@@ -27,7 +27,7 @@ public class RestfulAccessDeniedHandler implements AccessDeniedHandler {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        CRModel model = CRModel.error(StatusCode.PERMISSION,Message.ERR_NO_PERMISSION);
+        CRModel model = CRModel.warning(StatusCode.WAR_USER_NO_PERMISSION,Message.WAR_NO_PERMISSION,null);
         out.write(new ObjectMapper().writeValueAsString(model));
         out.flush();
         out.close();

@@ -1,7 +1,7 @@
 package com.ITIS.DreamTreeSharer.config.security;
 
-import com.ITIS.DreamTreeSharer.model.UserModel;
-import com.ITIS.DreamTreeSharer.service.LoginService;
+import com.ITIS.DreamTreeSharer.entity.UsersEntity;
+import com.ITIS.DreamTreeSharer.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private LoginService loginService;
+    private UsersService usersService;
 
     @Autowired
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
@@ -53,9 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            UserModel userModel = loginService.getCurrentUserInfo(username);
-            if (null != userModel) {
-                return userModel;
+            UsersEntity usersEntity = usersService.getCurrentUserInfo(username);
+            if (null != usersEntity) {
+                return usersEntity;
             }
             return null;
         };
@@ -84,12 +84,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //所有请求都需要认证
+                /**
+                 * 以下放行请求可以参考 https://blog.csdn.net/u012702547/article/details/106395776
+                 */
                 .and()
                 .authorizeRequests()
-//                //允许登录访问
-//                .antMatchers("/login","/logout")
-//                //permitAll() 不要忘记，不然不起作用
-//                .permitAll()
+                .antMatchers("/get-sms-code/**","/username-existed/**","/qiniu/uploadToken/**","/register","/login")
+                .permitAll()
                 //所有请求都需要认证
                 .anyRequest()
                 .authenticated()
@@ -102,8 +103,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
         http.exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler)
-                .authenticationEntryPoint(restfulAuthorizationEntryPoint);
+                .accessDeniedHandler(restfulAccessDeniedHandler) //权限不足 - 403
+                .authenticationEntryPoint(restfulAuthorizationEntryPoint); //未登录 - 401
 
     }
 
@@ -112,15 +113,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
     /**
-     * 放行的请求可以全部放这里
+     * 放行的静态资源请求可以全部放这里
      * @param web
      * @throws Exception
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
-                "/login",
-                "/admin/login",
                 "/logout",
                 "/css/**",
                 "/js/**",
@@ -130,9 +129,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/webjars/**",
                 "/swagger-resources/**",
                 "/v2/api-docs/**",
-                "/captcha",
-                "/register",
-                "/qiniu/uploadToken/**"
+                "/captcha"
         );
     }
 

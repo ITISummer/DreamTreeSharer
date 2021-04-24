@@ -1,13 +1,18 @@
 package com.ITIS.DreamTreeSharer.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.Collection;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * <p>
@@ -21,10 +26,13 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 @TableName("users")
 @ApiModel(value="UsersEntity对象", description="用户表")
-public class UsersEntity implements Serializable {
+public class UsersEntity implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
+//    @ApiModelProperty(value = "jwt token")
+//    private String jwtToken;
 
+    @TableId
     @ApiModelProperty(value = "用户id")
     private String userId;
 
@@ -58,8 +66,42 @@ public class UsersEntity implements Serializable {
     @ApiModelProperty(value = "用户最新登录时间")
     private LocalDateTime userLoginTime;
 
-    @ApiModelProperty(value = "用户是否被禁用 1-表示被禁用 0-表示没被禁用")
+    @ApiModelProperty(value = "用户是否被禁用 1-表示没禁用 0-表示被禁用")
     private Boolean userEnabled;
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.getUserPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return this.getUserUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return this.getUserEnabled();
+    }
 }

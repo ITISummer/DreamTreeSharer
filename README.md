@@ -889,3 +889,70 @@ public class CaptchaController {
 [java调用qiniu七牛云空间](https://blog.csdn.net/visket2008/article/details/77164233)
 
 <img src="qrne6et6u.hn-bkt.clouddn.com/test.jpg"/>
+
+## 2021年4月23日 遇到错误 
+
+```java
+Cannot construct instance of `com.ITIS.DreamTreeSharer.model.UsersModel` (no Creators, like default constructor, exist): cannot deserialize from Object value
+```
+
+本来想将 LoginModel 里面的内容全部添加到 UsersModel 里面，因为感觉这样整体性更强一点，但是这时候遇到以上错误，我分析了下，可能是我的 LoginModel 里面没有其他比较咋的数据，只是定义了字段，然后使用了 lombook，这样它能够让开发者不用手动写 getter，setter啥的！但是我的 UsersModel 里面实现了 UserDetails（spring security 相关） 然后里面写了个带参构造函数！我想就是因为手动写了构造函数造成的这个错误吧！具体看以下链接！
+
+[No Creators, like default construct, exist): cannot deserialize from Object value (no delegate- or property-based Creator](https://stackoverflow.com/questions/53191468/no-creators-like-default-construct-exist-cannot-deserialize-from-object-valu)
+
+我看这里面的解决办法是：手动加个无参构造函数就好了！**但是我这里不行！**
+
+## 配置 springboot 热部署
+
+[SpringBoot配置devtools实现热部署](https://www.cnblogs.com/lspz/p/6832358.html)
+
+### 引入依赖
+
+```xml
+<dependencies>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+		<optional>true</optional>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+	</dependency>
+
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-test</artifactId>
+		<scope>test</scope>
+	</dependency>
+</dependencies>
+
+<build>
+	<plugins>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+			<configuration>
+				<fork>true</fork>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>
+```
+
+### 配置项目文件
+
+```properties
+#热部署生效
+spring.devtools.restart.enabled: true
+#设置重启的目录
+spring.devtools.restart.additional-paths: src/main/java
+#classpath目录下的WEB-INF文件夹内容修改不重启
+spring.devtools.restart.exclude: WEB-INF/**
+```
+
+### idea 设置保存自动编译
+
+1. File-Settings-Compiler-Build Project automatically
+
+2. ctrl + shift + alt + /,选择Registry,勾上 Compiler autoMake allow when app running

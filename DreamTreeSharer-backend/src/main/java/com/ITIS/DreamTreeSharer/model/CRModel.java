@@ -1,6 +1,5 @@
 package com.ITIS.DreamTreeSharer.model;
 
-import com.ITIS.DreamTreeSharer.config.common.StatusCode;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -28,55 +27,32 @@ public class CRModel {
     private Object object;
 
     /**
-     * 成功返回结果
-     * @param message 返回信息
+     * 成功信息 - [200,300) - 对应成功状态码范围
+     * @param statusCode
+     * @param message
+     * @param obj
+     * @return
      */
-    public static CRModel success(String message) {
-        return new CRModel(StatusCode.SUCCESS,message,null);
-    }
-
+    public static CRModel success(Integer statusCode, String message, Object obj) { return new CRModel(statusCode, message, obj); }
     /**
-     * 成功返回结果
-     * @param message 返回信息
-     * @param obj 返回对象
+     * 提示信息 - [400,500) - 对应提示状态码范围
+     * @param statusCode
+     * @param message
+     * @param obj
+     * @return
      */
-    public static CRModel success(String message, Object obj) {
-        return new CRModel(StatusCode.SUCCESS,message,obj);
+    public static CRModel warning(Integer statusCode, String message, Object obj) {
+        return new CRModel(statusCode, message, obj);
     }
-
     /**
-     * 成功返回结果
-     * @param statusCode  错误码
-     * @param message 错误信息
+     * 错误信息 - [500,600) - 对应错误状态码范围
+     * @param statusCode
+     * @param message
+     * @param obj
+     * @return
      */
-    public static CRModel success(Integer statusCode, String message) {
-        return new CRModel(statusCode, message, null);
-    }
-
-    /**
-     * 失败返回结果
-     * @param message 返回信息
-     */
-    public static CRModel error(String message) {
-        return new CRModel(StatusCode.ERROR, message, null);
-    }
-
-    /**
-     * 失败返回结果
-     * @param message 返回信息
-     * @param obj 返回对象
-     */
-    public static CRModel error(String message, Object obj) {
-        return new CRModel(StatusCode.ERROR, message, obj);
-    }
-
-    /**
-     * 失败返回结果
-     * @param statusCode  错误码
-     * @param message 错误信息
-     */
-    public static CRModel error(Integer statusCode, String message) {
-        return new CRModel(statusCode, message, null);
+    public static CRModel error(Integer statusCode, String message, Object obj) {
+        return new CRModel(statusCode, message, obj);
     }
 
 

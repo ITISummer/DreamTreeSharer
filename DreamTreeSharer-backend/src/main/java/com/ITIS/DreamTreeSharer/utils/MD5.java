@@ -32,8 +32,8 @@ public final class MD5 {
     }
 
     public static void main(String[] args) {
-        //96e79218965eb72c92a549dd5a330112
-        System.out.println(MD5.md5Encrypt("summer"));
+        //11ce4cf157aeb5665b770c670dc6e219
+        System.out.println(MD5.md5Encrypt("WWW_dts123"));
     }
 
 }

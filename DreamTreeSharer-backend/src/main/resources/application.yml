@@ -44,6 +44,12 @@ spring:
       #连接超时时，默认是30000(30秒)
       connection-timeout: 30000
       #测试连接是否可用的查询语句
+  # 配置热部署
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+      additional-exclude: WEB-INF/**
 #日志级别配置
 logging:
   level:
@@ -86,4 +92,3 @@ jwt:
   expiration: 3600
   #JWT 负载中拿到开头
   tokenHead: ITIS
-

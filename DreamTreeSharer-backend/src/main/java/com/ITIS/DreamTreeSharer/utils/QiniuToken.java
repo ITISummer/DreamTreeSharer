@@ -128,14 +128,14 @@ public class QiniuToken {
     }
 
 
-//    public static void main(String[] args) {
-//        //7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:O3ujY6Ocqj46oRDSqldNq0cDnRQ=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwicmV0dXJuQm9keSI6IntcImtleVwiOlwiJChrZXkpXCIsXCJjb21cIjpcIiQoeDpjb20pXCIsXCJoYXNoXCI6XCIkKGV0YWcpXCIsXCJidWNrZXRcIjpcIiQoYnVja2V0KVwiLFwiZnNpemVcIjokKGZzaXplKX0iLCJkZWFkbGluZSI6MTYxODU2NTQ1Mn0=
-////        System.out.println(getCustomToken("itisummer-huanan-bucket","test.jpg"));
-//
-////        7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:U_0slxZN1g4Uj3ClddpoSnaGS4s=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwiZGVhZGxpbmUiOjE2MTg2MjY1OTl9
-//        System.out.println(getBaseToken("itisummer-huanan-bucket","test.jpg"));
-//        //remove("claim_guarantee.docx");
-//    }
+    public static void main(String[] args) {
+        //7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:O3ujY6Ocqj46oRDSqldNq0cDnRQ=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwicmV0dXJuQm9keSI6IntcImtleVwiOlwiJChrZXkpXCIsXCJjb21cIjpcIiQoeDpjb20pXCIsXCJoYXNoXCI6XCIkKGV0YWcpXCIsXCJidWNrZXRcIjpcIiQoYnVja2V0KVwiLFwiZnNpemVcIjokKGZzaXplKX0iLCJkZWFkbGluZSI6MTYxODU2NTQ1Mn0=
+//        System.out.println(getCustomToken("itisummer-huanan-bucket","test.jpg"));
+
+//        7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:U_0slxZN1g4Uj3ClddpoSnaGS4s=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwiZGVhZGxpbmUiOjE2MTg2MjY1OTl9
+        System.out.println(getBaseToken("itisummer-huanan-bucket","中国地图.jpg"));
+        //remove("claim_guarantee.docx");
+    }
 
 }
 
