@@ -90,7 +90,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
             UsersEntity usersEntity = new UsersEntity();
             usersEntity.setUserId(UUID.randomUUID()+"");
             usersEntity.setUserUsername(usersModel.getUsername());
-            usersEntity.setUserPassword(usersModel.getPassword());
+            usersEntity.setUserPassword(MD5.md5Encrypt(usersModel.getPassword()));
             usersEntity.setUserPhone(usersModel.getPhone());
 //            System.out.println(usersEntity);
             if(usersDao.insert(usersEntity) == 1) {
