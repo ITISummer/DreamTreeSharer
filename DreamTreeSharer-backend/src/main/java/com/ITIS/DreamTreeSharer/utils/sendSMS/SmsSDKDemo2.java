@@ -1,18 +1,21 @@
 package com.ITIS.DreamTreeSharer.utils.sendSMS;
 
 import com.ITIS.DreamTreeSharer.utils.SslUtil;
+import com.ITIS.DreamTreeSharer.utils.sendSMS.KewailSDK.SmsSingleSender;
+import com.ITIS.DreamTreeSharer.utils.sendSMS.KewailSDK.SmsSingleSenderResult;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SmsSDKDemo {
+public class SmsSDKDemo2 {
 
-    /*
+/*
+https://www.kewail.com/plan_plan2.html?to=sms
 注： 1、"msg"字段需要匹配审核通过的模板内容
 如果您的模板是"尊敬的客户:你的验证码是{1}"，则"msg"字段可赋值为："尊敬的客户:你的验证码是xxxx"。（其中"xxxx"为下发的验证码） 如果您有多个短信签名，请将需要的短信签名放在短信内容前面 例如您有"【Kewail科技】"，"【Kewail】"两个签名，但是想以"【Kewail】"签名发送短信， 则"msg"字段可赋值为："【Kewail】尊敬的客户:你的验证码是xxxx"。（其中"xxxx"为下发的验证码）
 2、"extend"字段的配置请联系Kewail短信技术支持
 3、sendisms接口，"tel"字段为国际电话号码通用格式，如："+8613788888888"
 4、"sig"字段根据公式sha256(secretkey=$accesskey&random=$random&time=$time&mobile=$mobile)生成。
-     */
+ */
     public boolean sendSms(String phoneNumber, String verifyCode) {
         boolean flag = false;
         try {

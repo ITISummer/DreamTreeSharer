@@ -956,3 +956,84 @@ spring.devtools.restart.exclude: WEB-INF/**
 1. File-Settings-Compiler-Build Project automatically
 
 2. ctrl + shift + alt + /,选择Registry,勾上 Compiler autoMake allow when app running
+
+## 2021年4月24日 错误：javax.net.ssl.SSLHandshakeException: PKIX path building failed
+
+情况是这样的，我想给我的项目弄一个注册时短信发送功能，于是我想到了我前面大创项目中也有用到过，我就去 copy 了里面的短信发送开发包！在我适配好我的项目后，我就开始测试，但是这时候给我报了个以上错误，我搜了下是跟 网站 ssl 证书有关！我使用的短信发送接口平台是 [https://www.kewail.com/](https://www.kewail.com/) 我尝试了这两个解决办法 
+
+[1. 解决Java在请求某些不受信任的https网站时会报：PKIX path building failed](https://blog.csdn.net/qq_34836433/article/details/78539009) 
+
+[2. 解决 javax.net.ssl.SSLHandshakeException: sun.security.validator.ValidatorException: PKIX path buildin](https://blog.csdn.net/chaishen10000/article/details/82992291)
+
+我推荐第二个解决办法，操作不复杂，同时也会解决报错问题！然后我的程序正常向我使用的短信平台发送短信请求要求了，但是我该平台给我反馈的信息是：我没进行实名认证，所以发送不了！我天，我测试下，还要实名认证，现在都弄得太严了吧！于是我就放弃了短信发送功能，转而从后台生成六位数验证码后，返回给前端，以达到测试的目的！
+
+于是我移除了这个短信接口平台的开发包，转而使用了另一个，另一个定制性没那么强，但是对于开发测试还是够用了！
+
+[容联通讯-模板短信业务接口](https://doc.yuntongxun.com/p/5a533de33b8496dd00dce07c#h3-5-2.2%20%E8%AF%B7%E6%B1%82%E5%8C%85%E4%BD%93)
+
+[免费测试](http://doc.yuntongxun.com/space/5a5098313b8496dd00dcdd7f)
+
+[cloopen -  java-sms-sdk - github](https://github.com/cloopen/java-sms-sdk)
+
+[尚硅谷Vue项目(vue实战谷粒外卖)-发送短信验证码](https://www.bilibili.com/video/BV1hs411E7cB?p=38&spm_id_from=pageDriver)
+
+以上是我的参考
+
+另外，我把我的适配好我的项目的代码给贴下：
+
+先 maven 导入开发依赖：
+
+```xml
+<dependency>
+    <groupId>com.cloopen</groupId>
+    <artifactId>java-sms-sdk</artifactId>
+    <version>1.0.4</version>
+</dependency>
+```
+
+然后编写适配自己项目的接口：
+
+```java
+/**
+ * @ClassName SmsSDKDemo1
+ * @Author LCX
+ * @Date 2021 2021-04-26 12:17 p.m.
+ * @Version 1.0
+ * [模板短信业务接口](https://doc.yuntongxun.com/p/5a533de33b8496dd00dce07c)
+ **/
+public class SmsSDKDemo1 {
+ public static boolean sendSms(String phone, String code) {
+   //生产环境请求地址：app.cloopen.com
+    String serverIp = "app.cloopen.com";
+    //请求端口
+    String serverPort = "8883";
+    //主账号,登陆云通讯网站后,可在控制台首页看到开发者主账号ACCOUNT SID和主账号令牌AUTH TOKEN
+    String accountSId = "填写你的账户 id";
+    String accountToken = "填写你的账户 token";
+    //请使用管理控制台中已创建应用的APPID
+    String appId = "填写你的 appid，默认该平台会分配一个测试的 id";
+    CCPRestSmsSDK sdk = new CCPRestSmsSDK();
+    sdk.init(serverIp, serverPort);
+    sdk.setAccount(accountSId, accountToken);
+    sdk.setAppId(appId);
+    sdk.setBodyType(BodyType.Type_JSON);
+    // 测试的 templateId 是 1
+    String templateId= "1";
+    // 用于替换模板中的{序号}
+    // 短信验证码 code
+    String[] datas = {code,"1"};
+    // 正式发送
+    HashMap<String, Object> result = sdk.sendTemplateSMS(phone,templateId,datas);
+    if("000000".equals(result.get("statusCode"))){
+        //正常返回输出data包体信息（map）
+        System.out.println("短信发送成功！");
+        return true;
+    }else{
+    	//异常返回输出错误码和错误信息
+    	System.out.println("错误码=" + result.get("statusCode") +" 错误信息= "+result.get("statusMsg"));
+    	return false;
+    }
+ }
+}
+```
+

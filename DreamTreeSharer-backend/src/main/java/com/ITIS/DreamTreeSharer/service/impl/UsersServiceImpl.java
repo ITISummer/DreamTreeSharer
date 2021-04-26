@@ -3,13 +3,13 @@ package com.ITIS.DreamTreeSharer.service.impl;
 import com.ITIS.DreamTreeSharer.config.common.Message;
 import com.ITIS.DreamTreeSharer.config.common.StatusCode;
 import com.ITIS.DreamTreeSharer.config.security.JwtTokenUtil;
-import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.dao.UsersDao;
+import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.model.UsersModel;
 import com.ITIS.DreamTreeSharer.service.UsersService;
 import com.ITIS.DreamTreeSharer.utils.MD5;
-import com.ITIS.DreamTreeSharer.utils.sendSMS.SmsSDKDemo;
+import com.ITIS.DreamTreeSharer.utils.sendSMS.SmsSDKDemo1;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,8 +48,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
     private JwtTokenUtil jwtTokenUtil;
     @Value("${jwt.tokenHead}")
     private String tokenHead;
-    @Autowired
-    private SmsSDKDemo smsSDKDemo;
 
     private String smsCode = "";
 
@@ -69,9 +67,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
      */
     @Override
     public CRModel getSmsCode(String phone) {
+        // 生成的验证码应该存入 redis 中
         this.smsCode = randomSmsCode();
-//        if (smsSDKDemo.sendSms(phone,this.smsCode)) {
-        if (phone.equals("15244812873")) {
+        if (SmsSDKDemo1.sendSms(phone,this.smsCode)) {
+//        if ("15244812873".equals(phone )) {
             return CRModel.success(StatusCode.SUCCESS,Message.SUC_SEND_SMS, this.smsCode);
         } else {
             return CRModel.success(StatusCode.ERROR,Message.ERR_SERVER_INTERNAL, null);

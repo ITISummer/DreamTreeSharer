@@ -1,4 +1,4 @@
-package com.ITIS.DreamTreeSharer.utils.sendSMS;
+package com.ITIS.DreamTreeSharer.utils.sendSMS.KewailSDK;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -84,5 +84,13 @@
             <version>0.0.20131108.vaadin1</version>
             <scope>compile</scope>
         </dependency>
+<!--        容联云通讯-短信验证码
+https://github.com/cloopen/java-sms-sdk
+-->
+        <dependency>
+            <groupId>com.cloopen</groupId>
+            <artifactId>java-sms-sdk</artifactId>
+            <version>1.0.4</version>
+        </dependency>
     </dependencies>
 </project>
