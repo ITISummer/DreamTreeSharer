@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 09/04/2021 21:34:35
+ Date: 01/05/2021 12:14:32
 */
 
 SET NAMES utf8mb4;
@@ -56,19 +56,21 @@ CREATE TABLE `users`  (
   `user_sex` varchar(10) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户性别',
   `user_birthday` date NULL DEFAULT NULL COMMENT '用户生日',
   `user_description` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户自定义描述',
-  `user_avatar_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'http://90sheji.com/?m=Activity&a=doubleTenthNineteen&srctype=1031&newSrctype=413' COMMENT '用户头像地址',
+  `user_avatar_url` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png' COMMENT '用户头像地址',
   `user_phone` varchar(11) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户手机号',
   `user_email` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '用户邮箱',
   `user_create_time` timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '创建用户时间',
   `user_login_time` timestamp(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '用户最新登录时间',
-  `user_enabled` tinyint(1) NULL DEFAULT NULL COMMENT '用户是否被禁用 1-表示被禁用 0-表示没被禁用',
+  `user_enabled` tinyint(1) NULL DEFAULT 1 COMMENT '用户是否被禁用 1-表示没禁用 0-表示被禁用',
   PRIMARY KEY (`user_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '用户表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
-INSERT INTO `users` VALUES ('0', 'summer', '6b1628b016dff46e6fa35684be6acc96', NULL, NULL, NULL, 'http://90sheji.com/?m=Activity&a=doubleTenthNineteen&srctype=1031&newSrctype=413', NULL, NULL, '2021-03-31 10:19:36', '2021-03-31 10:19:36', 1);
+INSERT INTO `users` VALUES ('02abc87a-34a3-49b0-85b1-2bd9b0c818e5', 'summer', '11ce4cf157aeb5665b770c670dc6e219', NULL, NULL, NULL, 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '15244812873', NULL, '2021-04-24 19:47:32', '2021-04-24 19:47:32', 1);
+INSERT INTO `users` VALUES ('70a23a89-adc4-4738-a15a-a89ce50dff7f', 'summerlvlv', 'WWW_dts123', NULL, NULL, NULL, 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '15244812873', NULL, '2021-04-25 18:14:41', '2021-04-25 18:14:41', 1);
+INSERT INTO `users` VALUES ('f31a1b69-c3ac-448a-aca8-e546f56072bb', 'summerlv', '11ce4cf157aeb5665b770c670dc6e219', NULL, NULL, NULL, 'https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png', '15244812873', NULL, '2021-04-24 11:04:10', '2021-04-24 11:04:10', 1);
 
 -- ----------------------------
 -- Table structure for users_pinboards
