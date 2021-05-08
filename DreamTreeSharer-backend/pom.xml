@@ -92,5 +92,20 @@ https://github.com/cloopen/java-sms-sdk
             <artifactId>java-sms-sdk</artifactId>
             <version>1.0.4</version>
         </dependency>
+        <!--websocket 依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+        <!--邮件: email-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <!-- 引入 redis 非关系型数据库 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
     </dependencies>
 </project>

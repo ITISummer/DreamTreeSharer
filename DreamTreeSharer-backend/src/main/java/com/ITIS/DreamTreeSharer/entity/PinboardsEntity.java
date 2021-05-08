@@ -50,5 +50,8 @@ public class PinboardsEntity implements Serializable {
     @TableField
     private String pinboardType;
 
+    @ApiModelProperty(value = "是否分享愿望板")
+    @TableField
+    private Boolean pinboardSharable;
 
 }

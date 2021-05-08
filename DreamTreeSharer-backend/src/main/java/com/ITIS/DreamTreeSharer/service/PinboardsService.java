@@ -1,6 +1,7 @@
 package com.ITIS.DreamTreeSharer.service;
 
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
+import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +14,23 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface PinboardsService extends IService<PinboardsEntity> {
 
+    /**
+     * 添加一个 pinboard
+     * @param pinboardsEntity
+     * @return
+     */
+    CRModel addOnePinboard(PinboardsEntity pinboardsEntity) throws Exception;
+
+    /**
+     * 获取当前登录用户上传的 pinboards
+     * @return
+     */
+    CRModel getPinboards();
+
+    /**
+     * 删除一个 pinboard
+     * @param pinboardId
+     * @return
+     */
+    CRModel deleteOnePinboardById(String pinboardId);
 }

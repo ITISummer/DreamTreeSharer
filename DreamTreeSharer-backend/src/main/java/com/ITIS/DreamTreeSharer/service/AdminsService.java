@@ -1,7 +1,10 @@
 package com.ITIS.DreamTreeSharer.service;
 
 import com.ITIS.DreamTreeSharer.entity.AdminsEntity;
+import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
 
 /**
  * <p>

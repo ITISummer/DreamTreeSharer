@@ -10,11 +10,40 @@
         <result column="pinboard_create_time" property="pinboardCreateTime" />
         <result column="pinboard_bgimg_url" property="pinboardBgimgUrl" />
         <result column="pinboard_type" property="pinboardType" />
+        <result column="pinboard_sharable" property="pinboardSharable" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        pinboard_id, pinboard_title, pinboard_content, pinboard_create_time, pinboard_bgimg_url, pinboard_type
+        pinboard_id, pinboard_title, pinboard_content, pinboard_create_time, pinboard_bgimg_url, pinboard_type, pinboard_sharable
     </sql>
 
+<!--
+[Mybatis 查询返回List<String>集合](https://blog.csdn.net/sotong006/article/details/81697814)
+[MYSQL查询结果作为另外条件的数据_sql中引用一个表的查询结果作为条件来查询另一个表如何实现？](https://blog.csdn.net/weixin_39964819/article/details/113303605)
+ -->
+    <select id="getPinboardsByuserId" resultType="com.ITIS.DreamTreeSharer.entity.PinboardsEntity">
+--         SELECT pin.pinboard_title,pin.pinboard_content,pin.pinboard_bgimg_url,pin.pinboard_sharable
+        SELECT *
+        FROM pinboards AS pin
+        WHERE pin.pinboard_id
+        IN (SELECT up.pinboard_id FROM users_pinboards AS up WHERE up.user_id = #{userId})
+    </select>
+<!--
+[MySQL 如何删除有外键约束的表数据](https://blog.csdn.net/CSDN_Mr_H/article/details/90317043#:~:text=%E4%B8%BB%E8%A6%81%E4%BB%8B%E7%BB%8D%E4%BA%86MySQL%E5%88%A0%E9%99%A4,%E9%9C%80%E8%A6%81%E7%9A%84%E6%9C%8B%E5%8F%8B%E5%8F%AF%E4%BB%A5%E5%8F%82%E8%80%83%E3%80%82&text=1.%E6%98%BE%E7%8E%B0%E8%A6%81%E5%88%A0%E9%99%A4%E7%9A%84,%3B%203.%E5%88%A0%E9%99%A4%E5%8D%B3%E5%8F%AF%E3%80%82)
+[MySQL多表同时删除方案](https://www.kancloud.cn/curder/mysql/355257)
+[MyBatisplus一次执行多条SQL语句,一个标签多条SQL](https://blog.csdn.net/aiyowei1106/article/details/85759590)
+[使用Mybatis-plus 的 delete 操作返回值一直是0](使用Mybatis-plus 的 delete 操作返回值一直是0)
+[mybatis-plus 执行有外键约束的多表删除后返回值总是为 0](待解决)
+-->
+    <delete id="deletePinboardById">
+        SET FOREIGN_KEY_CHECKS = 0;
+        DELETE pin.*,up.*
+        FROM users_pinboards AS up
+        INNER JOIN pinboards as pin
+        ON up.pinboard_id=pin.pinboard_id
+        AND up.user_id=#{userId}
+        AND pin.pinboard_id=#{pinboardId};
+        SET FOREIGN_KEY_CHECKS = 1;
+    </delete>
 </mapper>

@@ -36,4 +36,7 @@ public class Message {
     public static final String SUC_REGISTER = "注册成功！";
     public static final String WAR_USERNAME_EXISTED = "用户名已存在！";
     public static final String SUC_USERNAME = "恭喜你！用户名可以使用！";
+    public static final String WAR_NOT_FOUND_USER = "该用户不存在！";
+    public static final String WAR_CODE_IN_VALIDITY = "邮件五分钟之内有效！请不要频繁发送！";
+    public static final String SUC_SEND_EMAIL_CODE = "邮件发送成功！请注意查收验证码！";
 }

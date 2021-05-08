@@ -1,8 +1,6 @@
 package com.ITIS.DreamTreeSharer.controller;
 
 
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -14,7 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-03-26
  */
 @RestController
-@RequestMapping("/pinboards-entity")
+//@RequestMapping("/pinboards-entity")
 public class PinboardsController {
+
 
 }

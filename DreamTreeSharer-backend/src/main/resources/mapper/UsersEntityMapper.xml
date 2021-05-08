@@ -17,10 +17,39 @@
         <result column="user_login_time" property="userLoginTime" />
         <result column="user_enabled" property="userEnabled" />
     </resultMap>
-
+<!--[MyBatis-plus 中XML 映射文件的配置](https://zhuanlan.zhihu.com/p/268925137)-->
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         user_id, user_username, user_password, user_sex, user_birthday, user_description, user_avatar_url, user_phone, user_email, user_create_time, user_login_time, user_enabled
     </sql>
 
+<!--    根据关键词查询用户 -->
+    <select id="getUserList" resultType="com.ITIS.DreamTreeSharer.entity.UsersEntity">
+        SELECT *
+        FROM users
+        WHERE
+            users.`user_id` != #{id}
+            <if test = "null != keywords and '' != keywords">
+                AND users.`user_username` LIKE CONCAT( '%', #{keywords}, '%' )
+            </if>
+        ORDER BY users.`user_username`
+    </select>
+
+    <!--    更新用户邮箱
+    Mybatis中Mapper.xml文件中的update语句写法(https://blog.csdn.net/sdzhangshulong/article/details/50723400)
+    -->
+    <update id="updateEmailOrMobile">
+        update users
+        <set>
+            <if test="emailOrMobile!=null and ''!=emailOrMobile">
+            <if test="flag == 'email'">
+                users.`user_email` = #{emailOrMobile}
+            </if>
+            <if test="flag == 'mobile'">
+                users.`user_phone` = #{emailOrMobile}
+            </if>
+            </if>
+        </set>
+        where users.`user_id` = #{id}
+    </update>
 </mapper>

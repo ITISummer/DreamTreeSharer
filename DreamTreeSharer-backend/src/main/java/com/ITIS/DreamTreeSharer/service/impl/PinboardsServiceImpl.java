@@ -1,10 +1,23 @@
 package com.ITIS.DreamTreeSharer.service.impl;
 
-import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
+import com.ITIS.DreamTreeSharer.config.common.Message;
+import com.ITIS.DreamTreeSharer.config.common.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
+import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
+import com.ITIS.DreamTreeSharer.entity.UsersEntity;
+import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.service.PinboardsService;
+import com.ITIS.DreamTreeSharer.service.UsersPinboardsService;
+import com.ITIS.DreamTreeSharer.utils.UsersUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * <p>
@@ -17,4 +30,46 @@ import org.springframework.stereotype.Service;
 @Service
 public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEntity> implements PinboardsService {
 
+    @Autowired
+    PinboardsDao pinboardsDao;
+    @Autowired
+    UsersPinboardsService usersPinboardsService;
+
+    //[Spring Boot 中使用 @Transactional 注解配置事务管理](https://blog.csdn.net/nextyu/article/details/78669997)
+    @Override
+    @Transactional
+    public CRModel addOnePinboard(PinboardsEntity pinboardsEntity) throws Exception {
+        String pinboardId = UUID.randomUUID()+"";
+        pinboardsEntity.setPinboardId(pinboardId);
+        if (pinboardsDao.insert(pinboardsEntity) == 1) {
+            // 得到当前登录的用户 id
+            String userId = UsersUtil.getCurrentUser().getUserId();
+            if (usersPinboardsService.addOneUsersPinboardsRecord(userId,pinboardId) != 1){
+                throw new Exception("PinboardsServiceImpl -> addOnePinboard() -> 插入 pinboard 失败！");
+            };
+            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinboardId);
+        } else {
+            return new CRModel(StatusCode.WARNING, Message.WARNING, null);
+        }
+    }
+
+    @Override
+    public CRModel getPinboards() {
+        String userId = UsersUtil.getCurrentUser().getUserId();
+        List<PinboardsEntity> pinboards = pinboardsDao.getPinboardsByuserId(userId);
+        if (pinboards != null) {
+            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinboards);
+        }
+        return new CRModel(StatusCode.WARNING, Message.WARNING, null);
+    }
+
+    @Override
+    public CRModel deleteOnePinboardById(String pinboardId) {
+        String userId = UsersUtil.getCurrentUser().getUserId();
+        int res = pinboardsDao.deletePinboardById(userId, pinboardId);
+        if (res >= 0) {
+            return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,null);
+        }
+        return new CRModel(StatusCode.WARNING,Message.WARNING,null);
+    }
 }

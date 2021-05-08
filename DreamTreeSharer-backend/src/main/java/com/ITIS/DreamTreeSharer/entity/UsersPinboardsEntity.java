@@ -28,7 +28,7 @@ public class UsersPinboardsEntity implements Serializable {
 
     @ApiModelProperty(value = "用户-愿望板id")
     @TableId
-    private Integer upId;
+    private String upId;
 
     @ApiModelProperty(value = "用户id")
     @TableField

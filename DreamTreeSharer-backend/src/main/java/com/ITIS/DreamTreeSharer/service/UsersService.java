@@ -3,12 +3,10 @@ package com.ITIS.DreamTreeSharer.service;
 import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.model.UsersModel;
-import com.baomidou.mybatisplus.extension.service.IService;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * <p>
@@ -56,4 +54,22 @@ public interface UsersService extends UserDetailsService{
      * @return
      */
     CRModel usernameExisted(String username);
+
+    /**
+     * 根据关键词获取用户列表
+     * @return
+     */
+    List<UsersEntity> getUserList(String keywords);
+
+    /** 更新用户邮箱或者手机号 */
+    CRModel updateEmailOrMobile(String flag, String emailOrMobile, String code);
+
+    /** 更新用户邮箱或者手机号之前获取验证码 */
+    CRModel getCode(String flag, String emailOrMobile);
+
+    /** 更新用户密码 */
+    CRModel updatePwd(String pwd);
+
+    /** 更新用户头像 */
+    CRModel updateAvatar(String newAvatarUrl);
 }

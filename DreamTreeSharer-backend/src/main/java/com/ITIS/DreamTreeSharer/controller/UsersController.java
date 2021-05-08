@@ -3,9 +3,12 @@ package com.ITIS.DreamTreeSharer.controller;
 
 import com.ITIS.DreamTreeSharer.config.common.Message;
 import com.ITIS.DreamTreeSharer.config.common.StatusCode;
+import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
 import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.model.UsersModel;
+import com.ITIS.DreamTreeSharer.service.PinboardsService;
+import com.ITIS.DreamTreeSharer.service.UsersPinboardsService;
 import com.ITIS.DreamTreeSharer.service.UsersService;
 import com.ITIS.DreamTreeSharer.utils.QiniuToken;
 import io.swagger.annotations.Api;
@@ -15,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
-import java.util.UUID;
+import java.util.List;
 
 /**
  * @ClassName UsersController
@@ -29,8 +32,76 @@ import java.util.UUID;
 public class UsersController {
     @Autowired
     private UsersService usersService;
+    @Autowired
+    private PinboardsService pinboardsService;
+    @Autowired
+    private UsersPinboardsService usersPinboardsService;
+
+    @ApiOperation(value = "获取当前登录用户上传的 pinboard 列表")
+    @GetMapping("/get-pinboards")
+    public CRModel getPinboards() {
+       return pinboardsService.getPinboards();
+    }
+
+    @ApiOperation(value = "更新用户头像")
+    @DeleteMapping("/delete-one-pinboard/{pinboardId}")
+    public CRModel deleteOnePinboard(@PathVariable("pinboardId") String pinboardId) {
+       return pinboardsService.deleteOnePinboardById(pinboardId);
+    }
+
+    @ApiOperation(value = "更新用户头像")
+    @PutMapping("/update-avatar-url/{newAvatarUrl}")
+    public CRModel updateAvatar(@PathVariable("newAvatarUrl") String newAvatarUrl){
+        return usersService.updateAvatar(newAvatarUrl);
+    }
+
+    /**
+     * [Spring’s RequestBody and ResponseBody Annotations]
+     * (https://www.baeldung.com/spring-request-response-body)
+     * @param pwd
+     * @return
+     */
+    @ApiOperation(value = "更新用户密码")
+    @PutMapping("/update-pwd")
+    public CRModel updatePwd(@RequestBody UsersModel usersModel) {
+        return usersService.updatePwd(usersModel.getPassword());
+    }
 
 
+    @ApiOperation(value = "更新用户邮箱或者手机号前获取验证码")
+    @GetMapping("/get-code/{flag}/{emailOrMobile}")
+    public CRModel getCode(@PathVariable("flag") String flag, @PathVariable("emailOrMobile") String emailOrMobile) {
+       return usersService.getCode(flag,emailOrMobile);
+    }
+    // [SpringBoot获取参数的几种方式](https://www.jianshu.com/p/ee150654f712)
+    @ApiOperation(value = "更新用户邮箱或者手机号")
+    @PutMapping("/update-email-or-mobile/{flag}/{emailOrMobile}/{code}")
+    public CRModel updateEmailOrMobile(@PathVariable("flag") String flag, @PathVariable("emailOrMobile") String emailOrMobile, @PathVariable("code") String code) {
+        return usersService.updateEmailOrMobile(flag, emailOrMobile, code);
+    }
+
+    @ApiOperation(value = "根据关键词获取用户列表")
+    @GetMapping("/get-user-list")
+    public CRModel getUserList(String keywords) {
+        List<UsersEntity> users =  usersService.getUserList(keywords);
+        if (users != null) {
+            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS,users);
+        } else {
+            return new CRModel(StatusCode.WARNING, Message.WAR_NOT_FOUND_USER,null);
+        }
+    }
+
+    @ApiOperation(value = "添加一个 pinboard")
+    @PostMapping("/add-one-pinboard")
+    public CRModel addOnePinboard(@RequestBody PinboardsEntity pinboardsEntity) {
+        CRModel rep;
+        try {
+            rep = pinboardsService.addOnePinboard(pinboardsEntity);
+        } catch (Exception e) {
+            return new CRModel(StatusCode.ERROR,e.getMessage(),null);
+        }
+        return rep;
+    }
     /**
      * 登录
      * @param usersModel
@@ -87,7 +158,7 @@ public class UsersController {
         String username = principal.getName();
         UsersEntity usersEntity = usersService.getCurrentUserInfo(username);
         //不能返回用户密码
-        usersEntity.setUserPassword(null);
+//        usersEntity.setUserPassword(null);
         return CRModel.success(StatusCode.SUCCESS,Message.SUCCESS, usersEntity);
     }
 
@@ -109,9 +180,7 @@ public class UsersController {
     @ApiOperation(value = "用户获取图片上传 token")
     @GetMapping("/qiniu/uploadToken/{key}")
     public CRModel getQiniuToken(@PathVariable String key) {
-        System.out.println(key);
         String uploadToken = QiniuToken.getBaseToken(QiniuToken.CLOUD_BUCKET,key);
-        System.out.println(uploadToken);
         if (uploadToken == null){
             return CRModel.warning(StatusCode.WARNING, Message.WAR_WRONG_KEY, null);
         } else {

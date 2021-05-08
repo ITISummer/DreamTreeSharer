@@ -14,13 +14,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
+
+import java.util.Arrays;
 
 /**
  * @ClassName SecurityConfig
  * @Author LCX
  * @Date 2021 2021-03-26 10:20 p.m.
  * @Version 1.0
- *
+ * <p>
  * 前端输入用户名和密码，后台查数据库判断用户名和密码是否正确，
  * 如果正确则生成 jwt token 返回给前端，后面的每一次请求都会携带此 jwt token，
  * 在每一次前端发起请求前都会拦截请求进行 token 是否有效的验证；
@@ -35,8 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
     @Autowired
     private RestfulAuthorizationEntryPoint restfulAuthorizationEntryPoint;
+
     /**
      * 该方法用于配置security在启动时使用我们重写的userDetailsService
+     *
      * @param auth
      * @throws Exception
      */
@@ -46,7 +52,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -62,7 +67,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     *
      * @return
      */
     @Bean
@@ -72,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 配置security
+     *
      * @param http
      * @throws Exception
      */
@@ -89,7 +94,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  */
                 .and()
                 .authorizeRequests()
-                .antMatchers("/get-sms-code/**","/username-existed/**","/qiniu/uploadToken/**","/register","/login")
+                .antMatchers("/get-sms-code/**", "/username-existed/**", "/qiniu/uploadToken/**", "/register", "/login", "/ws/**")
                 .permitAll()
                 //所有请求都需要认证
                 .anyRequest()
@@ -112,8 +117,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
         return new JwtAuthenticationTokenFilter();
     }
+
     /**
      * 放行的静态资源请求可以全部放这里
+     *
      * @param web
      * @throws Exception
      */
@@ -132,5 +139,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/captcha"
         );
     }
+
+    // [Spring Boot Security HttpFirewall](http://mvpjava.com/spring-boot-security-httpfirewall/)
+    // [security.web.firewall.RequestRejectedException:
+    // The request was rejected because the URL contained a potentially malicious String ";"]
+    // (https://www.cnblogs.com/hetutu-5238/p/12145379.html)
+    /*
+        org.springframework.security.web.firewall.RequestRejectedException:
+        The request was rejected because the URL contained a potentially malicious String "//"
+     */
+//    @Bean
+//    public HttpFirewall looseHttpFirewall() {
+//        StrictHttpFirewall firewall = new StrictHttpFirewall();
+//        firewall.setAllowedHttpMethods(Arrays.asList("PUT","GET","POST","DELETE"));
+//        firewall.setAllowUrlEncodedSlash(true);
+//        return firewall;
+//    }
 
 }

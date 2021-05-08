@@ -27,7 +27,7 @@ spring:
   #配置数据源
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/dream_tree_sharer?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/dream_tree_sharer?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
     username: root
     password: root
     #配置数据库连接池
@@ -50,6 +50,28 @@ spring:
       enabled: true
       additional-paths: src/main/java
       additional-exclude: WEB-INF/**
+# 网易邮箱
+#spring.mail.host=smtp.163.com
+#spring.mail.username=lv_summer_666@163.com
+#spring.mail.password=WWWwangyi111
+#spring.mail.properties.smtp.auth=true
+#spring.mail.properties.smtp.starttls.enable=true
+#spring.mail.properties.smtp.starttls.required=true
+#spring.mail.properties.mail.smtp.ssl.enable=true
+  mail:
+    host: smtp.163.com
+    username: lv_summer_666@163.com
+    password: DTHFHCQMVTAFVDVF
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
+      mail:
+        smtp:
+          ssl:
+            enable: true
 #日志级别配置
 logging:
   level:

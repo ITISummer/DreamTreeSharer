@@ -13,4 +13,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UsersPinboardsService extends IService<UsersPinboardsEntity> {
 
+    Integer addOneUsersPinboardsRecord(String userId, String pinboardId);
 }

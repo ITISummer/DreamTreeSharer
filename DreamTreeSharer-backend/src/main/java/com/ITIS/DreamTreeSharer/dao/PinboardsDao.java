@@ -1,8 +1,12 @@
 package com.ITIS.DreamTreeSharer.dao;
 
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
+import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +19,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PinboardsDao extends BaseMapper<PinboardsEntity> {
 
+    List<PinboardsEntity> getPinboardsByuserId(@Param("userId") String userId);
+
+    int deletePinboardById(@Param("userId")String userId, @Param("pinboardId") String pinboardId);
 }
