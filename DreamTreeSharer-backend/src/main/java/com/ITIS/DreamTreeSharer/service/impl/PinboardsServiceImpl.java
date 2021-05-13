@@ -4,15 +4,13 @@ import com.ITIS.DreamTreeSharer.config.common.Message;
 import com.ITIS.DreamTreeSharer.config.common.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
-import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
+import com.ITIS.DreamTreeSharer.model.UPModel;
 import com.ITIS.DreamTreeSharer.service.PinboardsService;
 import com.ITIS.DreamTreeSharer.service.UsersPinboardsService;
 import com.ITIS.DreamTreeSharer.utils.UsersUtil;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,5 +69,14 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
             return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,null);
         }
         return new CRModel(StatusCode.WARNING,Message.WARNING,null);
+    }
+
+    @Override
+    public CRModel getSharablePinboard() {
+        List<UPModel> sharablePins = pinboardsDao.getSharablePins();
+        if (sharablePins.size() >= 1) {
+            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS,sharablePins);
+        }
+        return new CRModel(StatusCode.WARNING, Message.WARNING,null);
     }
 }

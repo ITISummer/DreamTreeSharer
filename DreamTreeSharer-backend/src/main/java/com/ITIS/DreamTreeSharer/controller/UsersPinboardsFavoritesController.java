@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-03-26
  */
 @RestController
-@RequestMapping("/users-pinboards-favorites-entity")
+//@RequestMapping("/users-pinboards-favorites-entity")
 public class UsersPinboardsFavoritesController {
 
 }

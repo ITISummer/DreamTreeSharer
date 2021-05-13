@@ -7,12 +7,44 @@
         <id column="upc_id" property="upcId" />
         <result column="user_id" property="userId" />
         <result column="pinboard_id" property="pinboardId" />
+        <result column="comment" property="comment" />
+        <result column="like_num" property="likeNum" />
         <result column="up_create_time" property="upCreateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        upc_id, user_id, pinboard_id, up_create_time
+        upc_id, user_id, pinboard_id, comment, like_num, up_create_time
     </sql>
+<!--
+[使用 Mybatis-plus 进行 crud 操作](https://www.lagou.com/lgeduarticle/18471.html)
+[mybatis mapper.xml中获取model属性值 & mybatis模糊查询 & mybatis动态查询](https://blog.csdn.net/weixin_38570967/article/details/80455601)
+[SQL INSERT INTO Statement](https://www.w3schools.com/sql/sql_insert.asp)
+[Mybatis的mapper.xml文件中插入数据返回自增主键](https://blog.csdn.net/zhuzhezhuzhe1/article/details/83038777)
+[关于Mybatis的mapper.xml文件中从pojo获取属性值的问题](https://www.jianshu.com/p/9050dab462ea?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation)
+-->
+    <insert id="addOneComment" useGeneratedKeys="true" keyProperty="commentModel.commentId">
+        INSERT INTO users_pinboards_comments(user_id,pinboard_id,comment,like_num,up_create_time)
+        VALUES(#{userId},#{commentModel.pinboardId},#{commentModel.content},#{commentModel.likeNum},#{commentModel.date})
+    </insert>
 
+<!--
+[MyBatis-Plus 分页查询以及自定义sql分页](https://blog.csdn.net/weixin_38111957/article/details/91554108)
+[廖雪峰的官方网站-分页查询](https://www.liaoxuefeng.com/wiki/1177760294764384/1217864791925600)
+-->
+    <select id="getComments" resultType="com.ITIS.DreamTreeSharer.model.CommentModel">
+        SELECT
+        upc.upc_id AS commentId,
+        upc.pinboard_id AS pinboardId,
+        upc.up_create_time AS date,
+        upc.`comment` AS content,
+        upc.like_num AS likeNum,
+        u.user_avatar_url AS fromAvatar,
+        u.user_username AS fromName
+        FROM users as u
+        INNER JOIN users_pinboards_comments AS upc
+        ON u.user_id=upc.user_id
+        WHERE upc.pinboard_id=#{pinId}
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
 </mapper>

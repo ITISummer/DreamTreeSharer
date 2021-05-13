@@ -1,14 +1,13 @@
 package com.ITIS.DreamTreeSharer.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDateTime;
-import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.io.Serializable;
 
 /**
  * <p>
@@ -32,16 +31,19 @@ public class UsersPinboardsCommentsEntity implements Serializable {
     private Integer upcId;
 
     @ApiModelProperty(value = "用户id")
-    @TableField
     private String userId;
 
     @ApiModelProperty(value = "愿望板id")
-    @TableField
     private String pinboardId;
 
+    @ApiModelProperty(value = "评论内容")
+    private String comment;
+
+    @ApiModelProperty(value = "评论被点赞数量")
+    private Integer likeNum;
+
     @ApiModelProperty(value = "创建愿望板时间")
-    @TableField
-    private LocalDateTime upCreateTime;
+    private String upCreateTime;
 
 
 }

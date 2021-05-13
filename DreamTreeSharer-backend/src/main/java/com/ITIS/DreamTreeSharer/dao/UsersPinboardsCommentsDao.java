@@ -1,8 +1,13 @@
 package com.ITIS.DreamTreeSharer.dao;
 
 import com.ITIS.DreamTreeSharer.entity.UsersPinboardsCommentsEntity;
+import com.ITIS.DreamTreeSharer.model.CRModel;
+import com.ITIS.DreamTreeSharer.model.CommentModel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +20,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsersPinboardsCommentsDao extends BaseMapper<UsersPinboardsCommentsEntity> {
 
+    int addOneComment(@Param("userId") String userId, @Param("commentModel") CommentModel commentModel);
+
+    List<CommentModel> getComments(@Param("pinId") String pinId, @Param("limit") int limit, @Param("offset") int offset);
 }

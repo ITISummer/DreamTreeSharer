@@ -51,9 +51,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		 * 3.withSockJS():支持socketJS访问
 		 */
 //		System.out.println("WebSocketConfig->registerStompEndpoints---建立链接前");
-//		registry.addEndpoint("/ws/ep").setAllowedOrigins("*").withSockJS();
+		registry.addEndpoint("/ws/ep").setAllowedOrigins("localhost:8080/**").withSockJS();
 //		registry.addEndpoint("/ws/ep").setAllowedOrigins().withSockJS();
-		registry.addEndpoint("/ws/ep").withSockJS();
+//		registry.addEndpoint("/ws/ep").withSockJS();
 //		System.out.println("WebSocketConfig->registerStompEndpoints---建立链接后");
 	}
 
@@ -64,6 +64,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 	@Override
 	public void configureMessageBroker(MessageBrokerRegistry registry) {
 		//配置代理域，可以配置多个，配置代理目的地前缀为/queue,可以在配置域上向客户端推送消息
+		// 发送消息队列，可配置多个路径
 		registry.enableSimpleBroker("/queue");
 	}
 
@@ -79,6 +80,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 				StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 				//判断是否为连接，如果是，需要获取token，并且设置用户对象
 				if (StompCommand.CONNECT.equals(accessor.getCommand())){
+					// Auto-Token 为前端发送的请求头
 					String token = accessor.getFirstNativeHeader("Auth-Token");
 					if (!StringUtils.isEmpty(token)){
 						String authToken = token.substring(tokenHead.length());

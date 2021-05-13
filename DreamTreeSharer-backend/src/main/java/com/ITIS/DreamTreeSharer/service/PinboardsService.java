@@ -33,4 +33,10 @@ public interface PinboardsService extends IService<PinboardsEntity> {
      * @return
      */
     CRModel deleteOnePinboardById(String pinboardId);
+
+    /**
+     * 获取所有的分享的 pinboard
+     * @return
+     */
+    CRModel getSharablePinboard();
 }

@@ -26,7 +26,9 @@ public class WsController {
 	@MessageMapping("/ws/chat")
 	public void handleMsg(Authentication authentication, ChatMsg chatMsg){
 		UsersEntity user = (UsersEntity) authentication.getPrincipal();
+		// 登录用户名
 		chatMsg.setFrom(user.getUserUsername());
+		// 显示用户名
 		chatMsg.setFormNickName(user.getUserUsername());
 		chatMsg.setDate(LocalDateTime.now());
 		simpMessagingTemplate.convertAndSendToUser(chatMsg.getTo(),"/queue/chat",chatMsg);

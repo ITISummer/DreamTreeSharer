@@ -1,5 +1,6 @@
 package com.ITIS.DreamTreeSharer.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
@@ -27,19 +28,16 @@ public class UsersPinboardsFavoritesEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "用户-愿望板-收藏id")
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Integer upfId;
 
     @ApiModelProperty(value = "用户id")
-    @TableField
     private String userId;
 
     @ApiModelProperty(value = "愿望板id")
-    @TableField
     private String pinboardId;
 
     @ApiModelProperty(value = "创建愿望板时间")
-    @TableField
     private LocalDateTime upCreateTime;
 
 

@@ -6,11 +6,11 @@ import com.ITIS.DreamTreeSharer.config.common.StatusCode;
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
 import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
+import com.ITIS.DreamTreeSharer.model.CommentModel;
 import com.ITIS.DreamTreeSharer.model.UsersModel;
-import com.ITIS.DreamTreeSharer.service.PinboardsService;
-import com.ITIS.DreamTreeSharer.service.UsersPinboardsService;
-import com.ITIS.DreamTreeSharer.service.UsersService;
+import com.ITIS.DreamTreeSharer.service.*;
 import com.ITIS.DreamTreeSharer.utils.QiniuToken;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +36,42 @@ public class UsersController {
     private PinboardsService pinboardsService;
     @Autowired
     private UsersPinboardsService usersPinboardsService;
+    @Autowired
+    private UsersPinboardsCommentsService upcService;
+    @Autowired
+    private UsersPinboardsFavoritesService upfService;
+
+    @ApiOperation(value = "模糊查询")
+    @GetMapping("/fuzzy-search/{flag}/{search}/{limit}/{offset}")
+    public CRModel fuzzySearch(@PathVariable String flag, @PathVariable String search, @PathVariable int limit, @PathVariable int offset) {
+        return usersService.fuzzySearch(flag,search, limit, offset);
+    }
+
+    @ApiOperation(value = "收藏一个 Pin")
+    @PostMapping("/add-one-pin/{pinId}")
+    public CRModel addOnePin(@PathVariable String pinId) {
+        return upfService.addOnePin(pinId);
+    }
+
+    @ApiOperation(value = "添加一条 comment ")
+    @PostMapping("/add-one-comment")
+    public CRModel addOneComment(@RequestBody CommentModel commentModel) {
+        return upcService.addOneComment(commentModel);
+    }
+
+    @ApiOperation(value = "更新一个 pinboard ")
+    @PutMapping("/update-pinboard")
+    public CRModel updatePin(@RequestBody PinboardsEntity pin) {
+           if (pinboardsService.update(new UpdateWrapper<PinboardsEntity>()
+                   .eq("pinboard_id",pin.getPinboardId())
+                   .set("pinboard_title",pin.getPinboardTitle())
+                   .set("pinboard_content",pin.getPinboardContent())
+                   .set("pinboard_bgimg_url",pin.getPinboardBgimgUrl())
+                   .set("pinboard_sharable",pin.getPinboardSharable()))) {
+               return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,null);
+           }
+        return new CRModel(StatusCode.WARNING,Message.WARNING,null);
+    }
 
     @ApiOperation(value = "获取当前登录用户上传的 pinboard 列表")
     @GetMapping("/get-pinboards")

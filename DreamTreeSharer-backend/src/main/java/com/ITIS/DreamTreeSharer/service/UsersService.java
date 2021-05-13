@@ -72,4 +72,7 @@ public interface UsersService extends UserDetailsService{
 
     /** 更新用户头像 */
     CRModel updateAvatar(String newAvatarUrl);
+
+    /** 前台模糊查询 */
+    CRModel fuzzySearch(String flag, String search, int limit, int offset);
 }

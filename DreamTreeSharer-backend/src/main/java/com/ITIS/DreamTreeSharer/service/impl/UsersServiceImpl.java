@@ -3,7 +3,9 @@ package com.ITIS.DreamTreeSharer.service.impl;
 import com.ITIS.DreamTreeSharer.config.common.Message;
 import com.ITIS.DreamTreeSharer.config.common.StatusCode;
 import com.ITIS.DreamTreeSharer.config.security.JwtTokenUtil;
+import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
 import com.ITIS.DreamTreeSharer.dao.UsersDao;
+import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
 import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.model.UsersModel;
@@ -13,8 +15,11 @@ import com.ITIS.DreamTreeSharer.utils.MD5;
 import com.ITIS.DreamTreeSharer.utils.RedisUtil;
 import com.ITIS.DreamTreeSharer.utils.UsersUtil;
 import com.ITIS.DreamTreeSharer.utils.sendSMS.SmsSDKDemo1;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,6 +62,62 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
     private EmailUtil emailUtil;
     @Autowired
     private RedisUtil redisUtil;
+    @Autowired
+    private PinboardsDao pinsDao;
+
+//    [java 泛型详解-绝对是对泛型方法讲解最详细的，没有之一](https://blog.csdn.net/qq_24084925/article/details/68491132)
+//    [【工作记录】java方法返回多个值（用法思考、比较）](https://blog.csdn.net/zzh920625/article/details/80462379)
+//    本来想使用泛型来简化开发的，但是越弄越复杂，不过还是学到了东西，以前从没有写过泛型！
+//    private <T> Map<String,Object> initSearch(T t) {
+//        QueryWrapper<T> wrapper = new QueryWrapper<>();
+//        IPage<T> page = new Page<>();
+//        Map<String,Object> result =  new HashMap<String,Object>();
+//        result.put("wrapper",wrapper);
+//        result.put("page",page);
+//        return result;
+//    }
+
+    /*
+    [mybatis-plus模糊查询](https://www.jianshu.com/p/36039f2ef4d6)
+    [条件构造器](https://mp.baomidou.com/guide/wrapper.html#abstractwrapper)
+    [MyBatisPlus之模糊查询加分页和条件构造器](https://blog.csdn.net/qq_43048586/article/details/90025128)
+    [Mybatis-plus 常用的方法（包含分页查询，模糊查询，排序……）](https://www.codenong.com/cs106124199/)
+     */
+    @Override
+    public CRModel fuzzySearch(String flag, String search, int size, int currentPage) {
+//Map<String,Object> result = initSearch(UsersEntity.class);
+//QueryWrapper<UsersEntity> wrapper = (QueryWrapper<UsersEntity>) result.get("wrapper");
+        switch (flag) {
+            //根据用户名进行模糊分页查询
+            case "1": {
+                QueryWrapper<UsersEntity> wrapper = new QueryWrapper<>();
+                wrapper.like("user_username", search);
+                long count = usersDao.selectCount(wrapper);
+                IPage<UsersEntity> page = new Page<>(currentPage, size, count);
+                page.setTotal(count);
+                return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, usersDao.selectPage(page, wrapper));
+            }
+            //根据pin类型进行模糊分页查询
+            case "2": {
+                QueryWrapper<PinboardsEntity> wrapper = new QueryWrapper<>();
+                wrapper.like("pinboard_type", search);
+                long count = pinsDao.selectCount(wrapper);
+                IPage<PinboardsEntity> page = new Page<>(currentPage, size, count);
+                page.setTotal(count);
+                return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinsDao.selectPage(page, wrapper));
+            }
+            //根据pin标题进行模糊分页查询
+            case "3": {
+                QueryWrapper<PinboardsEntity> wrapper = new QueryWrapper<>();
+                wrapper.like("pinboard_title", search);
+                long count = pinsDao.selectCount(wrapper);
+                IPage<PinboardsEntity> page = new Page<>(currentPage, size, count);
+                page.setTotal(count);
+                return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinsDao.selectPage(page, wrapper));
+            }
+        }
+        return new CRModel(StatusCode.WARNING, Message.WARNING, null);
+    }
 
     @Override
     public CRModel updateAvatar(String newAvatarUrl) {
@@ -65,6 +126,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         }
         return new CRModel(StatusCode.WARNING, "更新头像" + Message.WARNING, null);
     }
+
 
     @Override
     public CRModel updatePwd(String pwd) {
@@ -92,6 +154,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 发送邮箱验证码
+     *
      * @param email
      * @return
      */
@@ -150,10 +213,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         }
     }
 
-
     /**
      * 添加一个用户
-     *
      * @param usersModel
      * @return
      */

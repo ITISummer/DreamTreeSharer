@@ -1,6 +1,7 @@
 package com.ITIS.DreamTreeSharer.service;
 
 import com.ITIS.DreamTreeSharer.entity.UsersPinboardsFavoritesEntity;
+import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -13,4 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UsersPinboardsFavoritesService extends IService<UsersPinboardsFavoritesEntity> {
 
+    CRModel addOnePin(String pinId);
 }
