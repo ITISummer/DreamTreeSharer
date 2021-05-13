@@ -14,5 +14,21 @@
     <sql id="Base_Column_List">
         upf_id, user_id, pinboard_id, up_create_time
     </sql>
+<!-- 查询得到用户收藏夹 -->
+    <select id="getFavoritesById" resultType="com.ITIS.DreamTreeSharer.model.UPModel">
+        SELECT u.user_username, cc.* FROM(
+        SELECT up.user_id, dd.* FROM(
+        SELECT pin.*
+        FROM users_pinboards_favorites AS upf
+        INNER JOIN pinboards AS pin
+        ON upf.pinboard_id=pin.pinboard_id
+        WHERE upf.user_id = #{userId}
+        ) AS dd
+        INNER JOIN users_pinboards AS up
+        ON up.pinboard_id=dd.pinboard_id
+        ) AS cc
+        INNER JOIN users AS u
+        ON u.user_id=cc.user_id
+    </select>
 
 </mapper>

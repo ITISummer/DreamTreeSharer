@@ -1,8 +1,12 @@
 package com.ITIS.DreamTreeSharer.dao;
 
 import com.ITIS.DreamTreeSharer.entity.UsersPinboardsFavoritesEntity;
+import com.ITIS.DreamTreeSharer.model.UPModel;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * <p>
@@ -15,4 +19,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UsersPinboardsFavoritesDao extends BaseMapper<UsersPinboardsFavoritesEntity> {
 
+    List<UPModel> getFavoritesById(@Param("userId") String userId);
 }

@@ -15,4 +15,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface UsersPinboardsFavoritesService extends IService<UsersPinboardsFavoritesEntity> {
 
     CRModel addOnePin(String pinId);
+
+    /** 得到收藏夹内容 */
+    CRModel getFavorites();
 }

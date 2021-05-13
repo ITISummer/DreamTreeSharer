@@ -13,6 +13,7 @@ import com.ITIS.DreamTreeSharer.utils.QiniuToken;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,6 +42,19 @@ public class UsersController {
     @Autowired
     private UsersPinboardsFavoritesService upfService;
 
+    @ApiOperation(value = "根据用户名获取用户信息")
+    @GetMapping("/get-user-info/{username}")
+    public CRModel getUserInfo(@PathVariable String username){
+        UsersEntity user = (UsersEntity) usersService.loadUserByUsername(username);
+        user.setUserPassword(null);
+       return new CRModel(StatusCode.SUCCESS, Message.SUCCESS,user);
+    }
+    @ApiOperation(value = "得到收藏夹里的 pin")
+    @GetMapping("/get-favorites")
+    public CRModel getFavorites() {
+        return upfService.getFavorites();
+    }
+
     @ApiOperation(value = "模糊查询")
     @GetMapping("/fuzzy-search/{flag}/{search}/{limit}/{offset}")
     public CRModel fuzzySearch(@PathVariable String flag, @PathVariable String search, @PathVariable int limit, @PathVariable int offset) {
@@ -48,8 +62,8 @@ public class UsersController {
     }
 
     @ApiOperation(value = "收藏一个 Pin")
-    @PostMapping("/add-one-pin/{pinId}")
-    public CRModel addOnePin(@PathVariable String pinId) {
+    @PostMapping("/favorite-one-pin/{pinId}")
+    public CRModel favoriteOnePin(@PathVariable String pinId) {
         return upfService.addOnePin(pinId);
     }
 

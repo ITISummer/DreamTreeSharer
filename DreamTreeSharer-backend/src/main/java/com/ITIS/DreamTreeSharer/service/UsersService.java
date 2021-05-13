@@ -75,4 +75,5 @@ public interface UsersService extends UserDetailsService{
 
     /** 前台模糊查询 */
     CRModel fuzzySearch(String flag, String search, int limit, int offset);
+
 }

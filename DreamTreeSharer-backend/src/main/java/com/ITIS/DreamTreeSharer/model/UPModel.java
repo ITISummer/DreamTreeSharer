@@ -49,5 +49,6 @@ public class UPModel implements Serializable {
     private Integer likeNum;
 // pinboard 收藏量
     @ApiModelProperty(value = "愿望板收藏量")
-    private Integer favoriteNum;
+//    private Integer favoriteNum;
+    private int favoriteNum;
 }

@@ -90,6 +90,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         switch (flag) {
             //根据用户名进行模糊分页查询
             case "1": {
+                System.out.println("1---"+"flag-"+flag+"search-"+search+"size-"+size+"currentPage-"+currentPage);
                 QueryWrapper<UsersEntity> wrapper = new QueryWrapper<>();
                 wrapper.like("user_username", search);
                 long count = usersDao.selectCount(wrapper);
@@ -99,6 +100,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
             }
             //根据pin类型进行模糊分页查询
             case "2": {
+                System.out.println("2---"+"flag-"+flag+"search-"+search+"size-"+size+"currentPage-"+currentPage);
                 QueryWrapper<PinboardsEntity> wrapper = new QueryWrapper<>();
                 wrapper.like("pinboard_type", search);
                 long count = pinsDao.selectCount(wrapper);
@@ -108,6 +110,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
             }
             //根据pin标题进行模糊分页查询
             case "3": {
+                System.out.println("3---"+"flag-"+flag+"search-"+search+"size-"+size+"currentPage-"+currentPage);
                 QueryWrapper<PinboardsEntity> wrapper = new QueryWrapper<>();
                 wrapper.like("pinboard_title", search);
                 long count = pinsDao.selectCount(wrapper);
@@ -118,6 +121,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         }
         return new CRModel(StatusCode.WARNING, Message.WARNING, null);
     }
+
 
     @Override
     public CRModel updateAvatar(String newAvatarUrl) {
