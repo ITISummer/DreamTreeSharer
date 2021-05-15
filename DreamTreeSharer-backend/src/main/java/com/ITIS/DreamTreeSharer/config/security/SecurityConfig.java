@@ -94,7 +94,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                  */
                 .and()
                 .authorizeRequests()
-                .antMatchers("/get-sms-code/**", "/username-existed/**", "/qiniu/uploadToken/**", "/register", "/login", "/ws/**")
+                .antMatchers(
+                        "/get-sms-code/**",
+                        "/username-existed/**",
+                        "/qiniu/uploadToken/**",
+                        "/register",
+                        "/login",
+                        "/ws/**")
                 .permitAll()
                 //所有请求都需要认证
                 .anyRequest()

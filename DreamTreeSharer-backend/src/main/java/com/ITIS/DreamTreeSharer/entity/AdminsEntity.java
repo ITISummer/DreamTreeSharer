@@ -33,25 +33,15 @@ public class AdminsEntity implements Serializable{
     @ApiModelProperty(value = "管理员id")
     @TableId
     private String adminId;
-
     @ApiModelProperty(value = "管理员名")
-    @TableField
     private String adminName;
-
     @ApiModelProperty(value = "管理员登录密码")
-    @TableField
     private String adminPassword;
-
     @ApiModelProperty(value = "创建管理员时间")
-    @TableField
     private LocalDateTime adminCreateTime;
-
     @ApiModelProperty(value = "管理员是否被启用")
-    @TableField
     private Boolean adminEnabled;
-
     @ApiModelProperty(value = "管理员最新登录时间")
-    @TableField
     private LocalDateTime adminLoginTime;
 
 

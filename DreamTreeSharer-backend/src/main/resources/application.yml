@@ -1,5 +1,5 @@
 # 默认总配置文件
-# 激活配置
+# 激活 dev 配置
 spring:
   profiles:
     active: dev
@@ -31,7 +31,8 @@ spring:
     username: root
     password: root
     #配置数据库连接池
-    hikari: #springboot内嵌的连接池，速度快
+    #springboot 内嵌的连接池，速度快
+    hikari:
       pool-name: DreamTreeSharerDataPool
       #最小空闲连接数
       minimum-idle: 5
@@ -51,13 +52,6 @@ spring:
       additional-paths: src/main/java
       additional-exclude: WEB-INF/**
 # 网易邮箱
-#spring.mail.host=smtp.163.com
-#spring.mail.username=lv_summer_666@163.com
-#spring.mail.password=WWWwangyi111
-#spring.mail.properties.smtp.auth=true
-#spring.mail.properties.smtp.starttls.enable=true
-#spring.mail.properties.smtp.starttls.required=true
-#spring.mail.properties.mail.smtp.ssl.enable=true
   mail:
     host: smtp.163.com
     username: lv_summer_666@163.com
@@ -72,6 +66,8 @@ spring:
         smtp:
           ssl:
             enable: true
+
+
 #日志级别配置
 logging:
   level:
@@ -94,7 +90,6 @@ logging:
   #日期格式配置
   mvc:
     date-format: yyyy-MM-dd HH:mm:ss
-
 # mybatis-plus 配置
 mybatis-plus:
   # 配置 mapper 映射文件

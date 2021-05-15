@@ -2,6 +2,7 @@ package com.ITIS.DreamTreeSharer.controller;
 
 import com.ITIS.DreamTreeSharer.entity.ChatMsg;
 import com.ITIS.DreamTreeSharer.entity.UsersEntity;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -17,6 +18,7 @@ import java.time.LocalDateTime;
  * @since 1.0.0
  */
 @Controller
+@Api(tags = "WsController")
 public class WsController {
 
 	@Autowired

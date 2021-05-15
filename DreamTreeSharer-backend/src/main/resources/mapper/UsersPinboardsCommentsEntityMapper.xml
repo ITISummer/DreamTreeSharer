@@ -47,4 +47,31 @@
         WHERE upc.pinboard_id=#{pinId}
         LIMIT #{limit} OFFSET #{offset}
     </select>
+<!--
+users(创建者) pinboards(梦卡) users(评论者) users_pinboards_comments(评论内容，评论时间)
+谁对谁创建的 pin 进行了哪些 评论（集合）以及评论时间
+-->
+    <select id="getAllComment" resultType="com.ITIS.DreamTreeSharer.model.UPCModel">
+        SELECT
+        u2.user_username AS comment_autor,
+        u1.user_username AS pin_author,
+        pin.pinboard_title,
+        pin.pinboard_content,
+        pin.pinboard_bgimg_url,
+        cc.`comment`,
+        cc.up_create_time,
+        cc.like_num
+        FROM(
+        SELECT up.user_id AS pin_author,
+        upc.user_id AS comment_author,
+        upc.pinboard_id,
+        upc.`comment`,
+        upc.up_create_time,
+        upc.like_num
+        FROM users_pinboards AS up
+        INNER JOIN users_pinboards_comments AS upc ON up.pinboard_id=upc.pinboard_id) as cc
+        INNER JOIN users AS u1 ON u1.user_id=cc.pin_author
+        INNER JOIN users AS u2 ON u2.user_id=cc.comment_author
+        INNER JOIN pinboards AS pin ON pin.pinboard_id=cc.pinboard_id
+    </select>
 </mapper>

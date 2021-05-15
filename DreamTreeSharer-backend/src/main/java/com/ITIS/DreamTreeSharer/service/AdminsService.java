@@ -1,10 +1,8 @@
 package com.ITIS.DreamTreeSharer.service;
 
 import com.ITIS.DreamTreeSharer.entity.AdminsEntity;
-import com.ITIS.DreamTreeSharer.entity.UsersEntity;
+import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.baomidou.mybatisplus.extension.service.IService;
-
-import java.util.List;
 
 /**
  * <p>
@@ -15,4 +13,21 @@ import java.util.List;
  * @since 2021-03-26
  */
 public interface AdminsService extends IService<AdminsEntity> {
+    /** 得到所有用户 */
+    CRModel getAllUser();
+
+    /** 得到所有 pin 以及创建者信息 */
+    CRModel getAllPin();
+
+    /** 得到所有 comment 以及提交 comment 的用户信息 */
+    CRModel getAllComment();
+
+    /** 禁用一个用户 */
+    CRModel disableAUsers(String userId);
+
+    /** 删除一个 pinboard */
+    CRModel deleteAPin(String pinId);
+
+    /** 删除一条评论 */
+    CRModel deleteAComment(int commentId);
 }

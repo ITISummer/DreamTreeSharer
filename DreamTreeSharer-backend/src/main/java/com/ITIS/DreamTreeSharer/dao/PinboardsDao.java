@@ -21,7 +21,9 @@ public interface PinboardsDao extends BaseMapper<PinboardsEntity> {
 
     List<PinboardsEntity> getPinboardsByuserId(@Param("userId") String userId);
 
-    int deletePinboardById(@Param("userId")String userId, @Param("pinboardId") String pinboardId);
+    int deletePinboardById(@Param("userId")String userId, @Param("pinId") String pinId);
 
     List<UPModel> getSharablePins();
+
+    List<UPModel> getAllPin();
 }

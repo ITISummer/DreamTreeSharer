@@ -13,7 +13,6 @@ import com.ITIS.DreamTreeSharer.utils.QiniuToken;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,7 +28,6 @@ import java.util.List;
  **/
 @RestController
 @Api(tags = "UsersController")
-//@RequestMapping("/users-entity")
 public class UsersController {
     @Autowired
     private UsersService usersService;
@@ -93,7 +91,7 @@ public class UsersController {
        return pinboardsService.getPinboards();
     }
 
-    @ApiOperation(value = "更新用户头像")
+    @ApiOperation(value = "删除一个 pinboard")
     @DeleteMapping("/delete-one-pinboard/{pinboardId}")
     public CRModel deleteOnePinboard(@PathVariable("pinboardId") String pinboardId) {
        return pinboardsService.deleteOnePinboardById(pinboardId);
@@ -123,6 +121,7 @@ public class UsersController {
     public CRModel getCode(@PathVariable("flag") String flag, @PathVariable("emailOrMobile") String emailOrMobile) {
        return usersService.getCode(flag,emailOrMobile);
     }
+
     // [SpringBoot获取参数的几种方式](https://www.jianshu.com/p/ee150654f712)
     @ApiOperation(value = "更新用户邮箱或者手机号")
     @PutMapping("/update-email-or-mobile/{flag}/{emailOrMobile}/{code}")

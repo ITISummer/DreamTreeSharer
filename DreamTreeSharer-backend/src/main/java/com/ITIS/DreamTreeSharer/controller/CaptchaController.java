@@ -1,12 +1,12 @@
 package com.ITIS.DreamTreeSharer.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.imageio.ImageIO;
@@ -24,7 +24,7 @@ import java.io.IOException;
  * 获得 captcha 存入 session 中
  **/
 @RestController
-//@RequestMapping("/api")
+@Api(tags = "CaptchaController")
 public class CaptchaController {
 
     @Autowired

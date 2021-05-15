@@ -3,6 +3,7 @@ package com.ITIS.DreamTreeSharer.controller;
 
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.service.UsersPinboardsCommentsService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2021-03-26
  */
 @RestController
+@Api(tags = "UsersPinboardsCommentsController")
 public class UsersPinboardsCommentsController {
 
     @Autowired
@@ -27,7 +29,6 @@ public class UsersPinboardsCommentsController {
     @ApiOperation(value = "多表连查与分页得到 CommentModel 实体 ")
     @GetMapping("/get-comments/{pinId}/{limit}/{offset}")
     public CRModel getComments(@PathVariable String pinId, @PathVariable int limit, @PathVariable int offset) {
-        System.out.println(pinId);
         return upcService.getComments(pinId, limit, offset);
     }
 

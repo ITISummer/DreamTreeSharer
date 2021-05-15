@@ -36,26 +36,28 @@
     [MyBatisplus一次执行多条SQL语句,一个标签多条SQL](https://blog.csdn.net/aiyowei1106/article/details/85759590)
     [使用Mybatis-plus 的 delete 操作返回值一直是0](使用Mybatis-plus 的 delete 操作返回值一直是0)
     [mybatis-plus 执行有外键约束的多表删除后返回值总是为 0](待解决)
+    ============================================================
+    删除一个 pinboard，需要连带删除 users_pinboards,users_pinboards_comments,users_pinboards_favorites 中的记录
     -->
     <delete id="deletePinboardById">
         SET FOREIGN_KEY_CHECKS = 0;
-        DELETE pin.*,up.*
+        DELETE pin.*,up.*,upc.*,upf.*
         FROM users_pinboards AS up
         INNER JOIN pinboards as pin
         ON up.pinboard_id=pin.pinboard_id
-        AND up.user_id=#{userId}
-        AND pin.pinboard_id=#{pinboardId};
+        INNER JOIN users_pinboards_comments as upc
+        ON up.pinboard_id=upc.pinboard_id
+        INNER JOIN users_pinboards_favorites as upf
+        ON up.pinboard_id=upf.pinboard_id
+        <if test="userId!=null and ''!=userId">
+            AND up.user_id=#{userId}
+        </if>
+        AND pin.pinboard_id=#{pinId};
         SET FOREIGN_KEY_CHECKS = 1;
     </delete>
 
     <!--    [SQL 三表联查](https://blog.csdn.net/qq_34068082/article/details/79974100) -->
     <select id="getSharablePins" resultType="com.ITIS.DreamTreeSharer.model.UPModel">
---         SELECT u.user_id, u.user_username, u.user_avatar_url, pin.*
---         FROM (pinboards AS pin
---         INNER JOIN users_pinboards AS up ON up.pinboard_id=pin.pinboard_id)
---         LEFT JOIN users AS u ON u.user_id=up.user_id
---         WHERE pin.pinboard_sharable=1
---     ==========================================================
         SELECT u.user_id, u.user_username, u.user_avatar_url, pin.*, fc.favoriteNum
         FROM (
         SELECT up.user_id, up.pinboard_id, upf.favoriteNum
@@ -69,5 +71,20 @@
         INNER JOIN pinboards AS pin ON fc.pinboard_id=pin.pinboard_id
         INNER JOIN users AS u ON u.user_id=fc.user_id
         WHERE pin.pinboard_sharable=1
+    </select>
+<!--    管理员得到所有的 pin 以及创建者名字 -->
+    <select id="getAllPin" resultType="com.ITIS.DreamTreeSharer.model.UPModel">
+        SELECT u.user_username, pin.*, fc.favoriteNum
+        FROM (
+        SELECT up.user_id, up.pinboard_id, upf.favoriteNum
+        FROM users_pinboards AS up
+        LEFT JOIN (
+        SELECT pinboard_id, count(*) AS favoriteNum
+        FROM users_pinboards_favorites
+        GROUP BY pinboard_id
+        ) AS upf ON up.pinboard_id=upf.pinboard_id
+        ) AS fc
+        INNER JOIN pinboards AS pin ON fc.pinboard_id=pin.pinboard_id
+        INNER JOIN users AS u ON u.user_id=fc.user_id
     </select>
 </mapper>
