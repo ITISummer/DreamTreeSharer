@@ -45,6 +45,7 @@
         INNER JOIN users_pinboards_comments AS upc
         ON u.user_id=upc.user_id
         WHERE upc.pinboard_id=#{pinId}
+        ORDER BY upc.up_create_time
         LIMIT #{limit} OFFSET #{offset}
     </select>
 <!--
