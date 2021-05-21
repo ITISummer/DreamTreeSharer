@@ -1,8 +1,7 @@
 package com.ITIS.DreamTreeSharer.service.impl;
 
-import com.ITIS.DreamTreeSharer.config.common.Message;
-import com.ITIS.DreamTreeSharer.config.common.StatusCode;
-import com.ITIS.DreamTreeSharer.config.security.JwtTokenUtil;
+import com.ITIS.DreamTreeSharer.config.constants.Message;
+import com.ITIS.DreamTreeSharer.config.constants.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
 import com.ITIS.DreamTreeSharer.dao.UsersDao;
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
@@ -10,12 +9,8 @@ import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.model.UsersModel;
 import com.ITIS.DreamTreeSharer.service.UsersService;
-import com.ITIS.DreamTreeSharer.utils.EmailUtil;
-import com.ITIS.DreamTreeSharer.utils.MD5;
-import com.ITIS.DreamTreeSharer.utils.RedisUtil;
-import com.ITIS.DreamTreeSharer.utils.UsersUtil;
+import com.ITIS.DreamTreeSharer.utils.*;
 import com.ITIS.DreamTreeSharer.utils.sendSMS.SmsSDKDemo1;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -31,7 +26,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +59,9 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
     @Autowired
     private PinboardsDao pinsDao;
 
+    private final static String EMAIL = "email";
+    private final static String MOBILE = "mobile";
+
 //    [java 泛型详解-绝对是对泛型方法讲解最详细的，没有之一](https://blog.csdn.net/qq_24084925/article/details/68491132)
 //    [【工作记录】java方法返回多个值（用法思考、比较）](https://blog.csdn.net/zzh920625/article/details/80462379)
 //    本来想使用泛型来简化开发的，但是越弄越复杂，不过还是学到了东西，以前从没有写过泛型！
@@ -90,7 +87,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         switch (flag) {
             //根据用户名进行模糊分页查询
             case "1": {
-                System.out.println("1---"+"flag-"+flag+"search-"+search+"size-"+size+"currentPage-"+currentPage);
                 QueryWrapper<UsersEntity> wrapper = new QueryWrapper<>();
                 wrapper.like("user_username", search);
                 long count = usersDao.selectCount(wrapper);
@@ -100,7 +96,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
             }
             //根据pin类型进行模糊分页查询
             case "2": {
-                System.out.println("2---"+"flag-"+flag+"search-"+search+"size-"+size+"currentPage-"+currentPage);
                 QueryWrapper<PinboardsEntity> wrapper = new QueryWrapper<>();
                 wrapper.like("pinboard_type", search);
                 long count = pinsDao.selectCount(wrapper);
@@ -110,7 +105,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
             }
             //根据pin标题进行模糊分页查询
             case "3": {
-                System.out.println("3---"+"flag-"+flag+"search-"+search+"size-"+size+"currentPage-"+currentPage);
                 QueryWrapper<PinboardsEntity> wrapper = new QueryWrapper<>();
                 wrapper.like("pinboard_title", search);
                 long count = pinsDao.selectCount(wrapper);
@@ -125,16 +119,21 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     @Override
     public CRModel updateAvatar(String newAvatarUrl) {
-        if (usersDao.update(null, new UpdateWrapper<UsersEntity>().eq("user_id", UsersUtil.getCurrentUser().getUserId()).set("user_avatar_url", newAvatarUrl)) == 1) {
+        String userId = UsersUtil.getCurrentUser().getUserId();
+        if (usersDao.update(null, new UpdateWrapper<UsersEntity>().eq("user_id", userId).set("user_avatar_url", newAvatarUrl)) == 1) {
             return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, null);
         }
         return new CRModel(StatusCode.WARNING, "更新头像" + Message.WARNING, null);
     }
 
 
+    /**
+     * [mybatis-plus update 更新操作](https://blog.csdn.net/chenglc1612/article/details/107279142)
+     * @param pwd
+     * @return
+     */
     @Override
     public CRModel updatePwd(String pwd) {
-        // [mybatis-plus update 更新操作](https://blog.csdn.net/chenglc1612/article/details/107279142)
         pwd = MD5.md5Encrypt(pwd);
         if (usersDao.update(null, new UpdateWrapper<UsersEntity>().eq("user_id", UsersUtil.getCurrentUser().getUserId()).set("user_password", pwd)) == 1) {
             return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, null);
@@ -145,16 +144,15 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     @Override
     public CRModel getCode(String flag, String emailOrMobile) {
-        if ("email".equals(flag)) {
+        if (EMAIL.equals(flag)) {
             // 发送邮箱验证码
             return getEmailCode(emailOrMobile);
-        } else if ("mobile".equals(flag)) {
+        } else if (MOBILE.equals(flag)) {
             // 发送短信验证码
             return getSmsCode(emailOrMobile);
         }
         return new CRModel(StatusCode.ERROR, "服务器内部" + Message.ERROR, null);
     }
-
 
     /**
      * 发送邮箱验证码
@@ -163,8 +161,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
      * @return
      */
     public CRModel getEmailCode(String email) {
+        // 校验邮箱是否已被注册
+        if (usersDao.selectCount(new QueryWrapper<UsersEntity>().eq("user_email", email)) > 0) {
+            return CRModel.success(StatusCode.WARNING, "邮箱已被使用！", null);
+        }
         String code = randomSmsCode();
-        if (emailUtil.sendEmailCode(email, code)) {
+        if (emailUtil.sendSimpleEmail(email, code)) {
             return CRModel.success(StatusCode.SUCCESS, Message.SUC_SEND_EMAIL_CODE, code);
         } else {
             return CRModel.success(StatusCode.WARNING, Message.WAR_CODE_IN_VALIDITY, null);
@@ -179,8 +181,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
      */
     @Override
     public CRModel getSmsCode(String phone) {
+        // 校验手机是否已被注册
+        if (usersDao.selectCount(new QueryWrapper<UsersEntity>().eq("user_phone", phone)) > 0) {
+            return CRModel.success(StatusCode.WARNING, "手机号已被使用！", null);
+        }
         String code = randomSmsCode();
-        redisUtil.setKey(phone, code);
+        redisUtil.setKey(phone, code, 60);
         if (SmsSDKDemo1.sendSms(phone, redisUtil.getValue(phone))) {
             return CRModel.success(StatusCode.SUCCESS, Message.SUC_SEND_SMS, code);
         } else {
@@ -219,6 +225,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 添加一个用户
+     *
      * @param usersModel
      * @return
      */
@@ -265,9 +272,13 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
      * 否则提示继续输入。
      */
     @Override
-    public CRModel login(UsersModel usersModel, HttpServletRequest request) {
+    public CRModel login(UsersModel usersModel) {
         //取出放入session的验证码并判断验证码是否正确 - 这里的 captcha 字段要和前端传递的字段一样
-        String captchaCode = (String) request.getSession().getAttribute("captcha");
+        String captchaCode = (String) redisUtil.getValue("captcha");
+        System.out.println(captchaCode);
+        if (captchaCode == null) {
+            return CRModel.warning(StatusCode.WARNING, "请重新刷新生成验证码！", null);
+        }
         if (!captchaCode.equalsIgnoreCase(usersModel.getCaptcha())) { //忽略大小写
             return CRModel.warning(StatusCode.WARNING, Message.WAR_CAPTCHA, null);
         }

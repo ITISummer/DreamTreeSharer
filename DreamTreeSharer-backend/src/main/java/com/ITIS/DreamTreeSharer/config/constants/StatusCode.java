@@ -1,4 +1,4 @@
-package com.ITIS.DreamTreeSharer.config.common;
+package com.ITIS.DreamTreeSharer.config.constants;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

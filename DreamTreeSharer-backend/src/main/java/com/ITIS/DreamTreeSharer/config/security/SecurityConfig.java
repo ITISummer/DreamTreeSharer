@@ -13,11 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
-
-import java.util.Arrays;
 
 /**
  * @ClassName SecurityConfig
@@ -34,9 +31,8 @@ import java.util.Arrays;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UsersService usersService;
-
     @Autowired
-    private RestfulAccessDeniedHandler restfulAccessDeniedHandler;
+    private RestfulAccessDeniedHandler accessDeniedHandler;
     @Autowired
     private RestfulAuthorizationEntryPoint restfulAuthorizationEntryPoint;
 
@@ -49,14 +45,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+//      auth.userDetailsService(userDetailsServiceForAdmin()).passwordEncoder(passwordEncoder());
     }
 
-    /**
-     * @return
-     */
     @Override
     @Bean
     public UserDetailsService userDetailsService() {
+        // [Java Lambda 表达式](https://www.runoob.com/java/java8-lambda-expressions.html)
         return username -> {
             UsersEntity usersEntity = usersService.getCurrentUserInfo(username);
             if (null != usersEntity) {
@@ -66,9 +61,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         };
     }
 
-    /**
-     * @return
-     */
+//    @Override
+//    @Bean
+//    public UserDetailsService userDetailsServiceForAdmin() {
+//        return username -> {
+//            AdminsEntity adminsEntity = adminsService.getCurrentUserInfo(username);
+//            if (null != adminsEntity) {
+//                return adminsEntity;
+//            }
+//            return null;
+//        };
+//    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -89,9 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 //所有请求都需要认证
-                /**
-                 * 以下放行请求可以参考 https://blog.csdn.net/u012702547/article/details/106395776
-                 */
+                //以下放行请求可以参考 https://blog.csdn.net/u012702547/article/details/106395776
                 .and()
                 .authorizeRequests()
                 .antMatchers(
@@ -99,8 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/username-existed/**",
                         "/qiniu/uploadToken/**",
                         "/register",
-                        "/login",
-                        "/ws/**")
+                        "/login")
                 .permitAll()
                 //所有请求都需要认证
                 .anyRequest()
@@ -114,18 +115,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         //添加自定义未授权和未登录结果返回
         http.exceptionHandling()
-                .accessDeniedHandler(restfulAccessDeniedHandler) //权限不足 - 403
+                .accessDeniedHandler(accessDeniedHandler) //权限不足 - 403
                 .authenticationEntryPoint(restfulAuthorizationEntryPoint); //未登录 - 401
 
     }
 
-    @Bean
-    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
-        return new JwtAuthenticationTokenFilter();
-    }
-
     /**
      * 放行的静态资源请求可以全部放这里
+     * 不走拦截链
+     * [Ant 风格路径表达式](https://www.jianshu.com/p/189847a7d1c7)
      *
      * @param web
      * @throws Exception
@@ -133,19 +131,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
-                "/logout",
                 "/css/**",
                 "/js/**",
-                "/index.html",
-                "/favicon.icon",
-                "/doc.html",
                 "/webjars/**",
                 "/swagger-resources/**",
                 "/v2/api-docs/**",
+                "/doc.html",
+                "/ws/**",
+                "/favicon.icon",
+                "/logout",
                 "/captcha",
-                "/ws/**"
+                "/get-all-user",
+                "/get-all-pin",
+                "/get-all-comment"
         );
     }
+
+    @Bean
+    public JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter() {
+        return new JwtAuthenticationTokenFilter();
+    }
+
 
     // [Spring Boot Security HttpFirewall](http://mvpjava.com/spring-boot-security-httpfirewall/)
     // [security.web.firewall.RequestRejectedException:

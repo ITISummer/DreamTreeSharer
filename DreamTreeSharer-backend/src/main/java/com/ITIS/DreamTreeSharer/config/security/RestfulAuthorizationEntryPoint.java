@@ -1,7 +1,7 @@
 package com.ITIS.DreamTreeSharer.config.security;
 
-import com.ITIS.DreamTreeSharer.config.common.Message;
-import com.ITIS.DreamTreeSharer.config.common.StatusCode;
+import com.ITIS.DreamTreeSharer.config.constants.Message;
+import com.ITIS.DreamTreeSharer.config.constants.StatusCode;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.core.AuthenticationException;

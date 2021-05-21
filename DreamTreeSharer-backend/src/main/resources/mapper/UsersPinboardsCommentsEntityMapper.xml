@@ -53,7 +53,7 @@ users(创建者) pinboards(梦卡) users(评论者) users_pinboards_comments(评
 -->
     <select id="getAllComment" resultType="com.ITIS.DreamTreeSharer.model.UPCModel">
         SELECT
-        u2.user_username AS comment_autor,
+        u2.user_username AS comment_author,
         u1.user_username AS pin_author,
         pin.pinboard_title,
         pin.pinboard_content,

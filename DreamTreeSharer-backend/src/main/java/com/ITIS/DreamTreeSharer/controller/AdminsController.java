@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2021-03-26
  */
 @RestController
-@RequestMapping("/admin")
+//@RequestMapping("/admin")
 @Api(tags = "AdminController")
 public class AdminsController {
 
@@ -27,8 +27,8 @@ public class AdminsController {
     @ApiOperation(value = "查询所有用户")
     @GetMapping("/get-all-user")
     public CRModel getAllUsers() {
-        System.out.println("==============");
-        return adminsService.getAllUser(); }
+        return adminsService.getAllUser();
+    }
 
     @ApiOperation(value = "禁用用户账户")
     @PutMapping("/disable-a-user/{userId}")

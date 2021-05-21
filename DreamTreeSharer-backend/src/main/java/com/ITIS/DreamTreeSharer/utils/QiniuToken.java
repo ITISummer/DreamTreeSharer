@@ -28,7 +28,8 @@ public class QiniuToken {
     private static final String SECRET_KEY = "Q59neB4gG-qeciUTstqPUJXMLUiVKUh-mfX8EPbe";
 
     /** 基础图片空间 写自己的 */
-    public static final String CLOUD_BUCKET = "itisummer-huanan-bucket";
+//    public static final String CLOUD_BUCKET = "itisummer-huanan-bucket";
+    public static final String CLOUD_BUCKET = "itisummer-huabei-bucket";
 //    /** 基础空间域名 写自己的 */
 //    public static final String CLOUD_URL = "qrne6et6u.hn-bkt.clouddn.com";
 
@@ -133,7 +134,7 @@ public class QiniuToken {
 //        System.out.println(getCustomToken("itisummer-huanan-bucket","test.jpg"));
 
 //        7viju8jm47T3cIZFLPXPJpj28OUpjQzFPS5Fw80p:U_0slxZN1g4Uj3ClddpoSnaGS4s=:eyJzY29wZSI6Iml0aXN1bW1lci1odWFuYW4tYnVja2V0OnRlc3QuanBnIiwiZGVhZGxpbmUiOjE2MTg2MjY1OTl9
-        System.out.println(getBaseToken("itisummer-huanan-bucket","中国地图.jpg"));
+        System.out.println(getBaseToken("itisummer-huabei-bucket","中国地图.jpg"));
         //remove("claim_guarantee.docx");
     }
 

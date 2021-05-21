@@ -1,7 +1,7 @@
 package com.ITIS.DreamTreeSharer.service.impl;
 
-import com.ITIS.DreamTreeSharer.config.common.Message;
-import com.ITIS.DreamTreeSharer.config.common.StatusCode;
+import com.ITIS.DreamTreeSharer.config.constants.Message;
+import com.ITIS.DreamTreeSharer.config.constants.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.AdminsDao;
 import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
 import com.ITIS.DreamTreeSharer.dao.UsersDao;
@@ -63,7 +63,7 @@ public class AdminsServiceImpl extends ServiceImpl<AdminsDao, AdminsEntity> impl
 
     @Override
     public CRModel deleteAPin(String pinId) {
-       return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,pinsDao.deletePinboardById(null,pinId));
+       return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,pinsDao.deletePinboardById(pinId));
     }
 
     @Override

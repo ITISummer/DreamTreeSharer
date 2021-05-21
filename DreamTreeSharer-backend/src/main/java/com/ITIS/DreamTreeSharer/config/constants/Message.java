@@ -1,4 +1,4 @@
-package com.ITIS.DreamTreeSharer.config.common;
+package com.ITIS.DreamTreeSharer.config.constants;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,7 +25,7 @@ public class Message {
     @ApiModelProperty(value = "账户被禁用，请联系管理员！")
     public static final String WAR_IS_FORBIDDEN = "账户被禁用，请联系管理员！";
     public static final String WAR_NO_PERMISSION = "权限不够！";
-    public static final String WAR_NOT_LOGIN = "尚未登陆，请先登录！";
+    public static final String WAR_NOT_LOGIN = "尚未登陆，请先登录~~~";
     public static final String WAR_CAPTCHA = "验证码输入错误！";
     public static final String WAR_WRONG_KEY = "错误的文件名！";
     /*----------------------------错误消息---------------------------*/

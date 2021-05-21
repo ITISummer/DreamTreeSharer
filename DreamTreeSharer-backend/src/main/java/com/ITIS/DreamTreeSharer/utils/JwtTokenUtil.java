@@ -1,4 +1,4 @@
-package com.ITIS.DreamTreeSharer.config.security;
+package com.ITIS.DreamTreeSharer.utils;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -33,18 +33,17 @@ public class JwtTokenUtil {
 
     private static final String CLAIM_KEY_USERNAME = "sub";  //荷载用户
     private static final String CLAIM_KEY_CREATED = "CreateTime"; //创建时间
-
+    //密钥
     @Value("${jwt.secret}")
-    private String secret; //密钥
+    private String secret;
+    //token 失效时间
     @Value("${jwt.expiration}")
-    private Long expiration;  //token 失效时间
+    private Long expiration;
 
-//      private String secret = "ITIS.com";
-//      private long expiration = 3600;
 
 
     /**
-     * 根据用户信息生成加密Token - 加密
+     * 根据用户信息生成加密 Token - 加密
      * @param userDetails - security 框架中类
      * @return
      */
@@ -57,48 +56,9 @@ public class JwtTokenUtil {
         return generateToken(claims);
     }
 
-//    public static void main(String[] args) {
-//        JwtTokenUtil jwtTokenUtil = new JwtTokenUtil();
-//        UserDetails userDetails = new UserDetails() {
-//            @Override
-//            public Collection<? extends GrantedAuthority> getAuthorities() {
-//                return null;
-//            }
-//
-//            @Override
-//            public String getPassword() {
-//                return null;
-//            }
-//
-//            @Override
-//            public String getUsername() {
-//                return "summer";
-//            }
-//
-//            @Override
-//            public boolean isAccountNonExpired() {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean isAccountNonLocked() {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean isCredentialsNonExpired() {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean isEnabled() {
-//                return false;
-//            }
-//        };
-//        System.out.println(jwtTokenUtil.generateToken(userDetails));
-//    }
     /**
      * 根据荷载生成 JWT Token - 加密
+     * 荷载包含荷载持有人，荷载创建时间
      * @param claims
      * @return
      */
@@ -111,12 +71,12 @@ public class JwtTokenUtil {
     }
 
     /**
-     * 设置token失效时间 - 设置 token 存活时间
+     * 生成token失效时间 - 设置 token 存活时间
      * @return
      */
     private Date generateExpirationDate() {
-        //失效时间 =  当前系统的时间 + 配置的有效时间 10h
-        return new Date(System.currentTimeMillis() + expiration*10000);
+        //失效时间 =  当前系统的时间 + 配置的有效时间 10h -> 毫秒
+        return new Date(System.currentTimeMillis() + expiration*1000);
     }
 
     /**
@@ -163,9 +123,9 @@ public class JwtTokenUtil {
      */
     public boolean validateToken(String token, UserDetails userDetails) {
         /**
-         * 判断token是否有效主要做两个判断
-         * 1.判断token中username是否等于UserDetails中的 username
-         * 2.判断token是否已经过期
+         * 判断 token 是否有效主要做两个判断
+         * 1.判断 token 中 username 是否等于 UserDetails 中的 username
+         * 2.判断 token 是否已经过期
          */
         String username = getUserNameFromToken(token);
         return username.equals(userDetails.getUsername()) && !isTokenExpired(token);

@@ -1,5 +1,6 @@
 package com.ITIS.DreamTreeSharer.config.security;
 
+import com.ITIS.DreamTreeSharer.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,18 +32,19 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private UserDetailsService userDetailsService;
-    /**
-     * @param request
-     * @param response
-     * @param filterChain
-     */
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = request.getHeader(tokenHeader);
         //存在 token
         if(null != authHeader && authHeader.startsWith(tokenHead)) {
             String authToken = authHeader.substring(tokenHead.length());
-            String username = jwtTokenUtil.getUserNameFromToken(authToken);
+            String username = null;
+            try {
+                username = jwtTokenUtil.getUserNameFromToken(authToken);
+            }catch (Exception e) {
+                System.out.println(e.getMessage()+"--用户未登录或者登录有效期已过！");
+            }
             //token 存在用户名但未登录
             if(null != username && null == SecurityContextHolder.getContext().getAuthentication()) {
                 //登录

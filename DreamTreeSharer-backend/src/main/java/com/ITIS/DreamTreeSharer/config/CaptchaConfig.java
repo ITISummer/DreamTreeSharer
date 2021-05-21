@@ -25,7 +25,7 @@ public class CaptchaConfig {
         //是否有边框
         properties.setProperty("kaptcha.border", "yes");
         //设置边框颜色
-        properties.setProperty("kaptcha.border.color",  "105,179,90");
+        properties.setProperty("kaptcha.border.color", "105,179,90");
         //边框粗细度，默认为1
         //properties.setProperty("kaptcha.border.thickness", "1");
         //验证码
@@ -33,11 +33,11 @@ public class CaptchaConfig {
         //验证码文本字符颜色，默认黑色
         properties.setProperty("kaptcha.textproducer.font.color", "blue");
         // 字体大小
-        properties.setProperty("kaptcha.textproducer.font.names","宋体,楷体,微软雅黑");
+        properties.setProperty("kaptcha.textproducer.font.names", "宋体,楷体,微软雅黑");
         //字体大小，默认40
         properties.setProperty("kaptcha.textproducer.font.size", "30");
         //验证码文本字符内容范围，默认为abcdfadfa....
-        properties.setProperty("kaptcha.textproducer.char.string","");
+        properties.setProperty("kaptcha.textproducer.char.string", "");
         //字符长度，默认5
         properties.setProperty("kaptcha.textproducer.char.length", "4");
         //字符间距

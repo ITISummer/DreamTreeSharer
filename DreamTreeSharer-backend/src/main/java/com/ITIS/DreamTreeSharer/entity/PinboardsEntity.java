@@ -1,8 +1,8 @@
 package com.ITIS.DreamTreeSharer.entity;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("pinboards")
-@ApiModel(value="PinboardsEntity对象", description="愿望板表")
+@ApiModel(value = "PinboardsEntity对象", description = "愿望板表")
 public class PinboardsEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -38,6 +38,7 @@ public class PinboardsEntity implements Serializable {
     private String pinboardContent;
 
     @ApiModelProperty(value = "创建愿望板时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private LocalDateTime pinboardCreateTime;
 
     @ApiModelProperty(value = "愿望板背景图地址")

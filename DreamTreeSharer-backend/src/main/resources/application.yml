@@ -105,7 +105,7 @@ jwt:
   tokenHeader: Authorization
   #JWT 加解密使用的密钥
   secret: ITIS.com
-  #JWT的超期限时间 - 毫秒
-  expiration: 3600
+  #JWT的超期限时间 - 秒 ->(10h)
+  expiration: 36000
   #JWT 负载中拿到开头
   tokenHead: ITIS

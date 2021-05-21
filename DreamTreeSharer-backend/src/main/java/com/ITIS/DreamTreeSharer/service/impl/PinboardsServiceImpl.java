@@ -1,7 +1,7 @@
 package com.ITIS.DreamTreeSharer.service.impl;
 
-import com.ITIS.DreamTreeSharer.config.common.Message;
-import com.ITIS.DreamTreeSharer.config.common.StatusCode;
+import com.ITIS.DreamTreeSharer.config.constants.Message;
+import com.ITIS.DreamTreeSharer.config.constants.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
@@ -63,12 +63,11 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
 
     @Override
     public CRModel deleteOnePinboardById(String pinboardId) {
-        String userId = UsersUtil.getCurrentUser().getUserId();
-        int res = pinboardsDao.deletePinboardById(userId, pinboardId);
-        if (res >= 0) {
-            return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,null);
+        int res = pinboardsDao.deletePinboardById(pinboardId);
+        if (res > 0) {
+            return new CRModel(StatusCode.SUCCESS,"删除"+Message.SUCCESS,null);
         }
-        return new CRModel(StatusCode.WARNING,Message.WARNING,null);
+        return new CRModel(StatusCode.WARNING,"删除"+Message.WARNING,null);
     }
 
     @Override

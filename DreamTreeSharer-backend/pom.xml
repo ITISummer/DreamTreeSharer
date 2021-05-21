@@ -72,7 +72,7 @@
             <artifactId>qiniu-java-sdk</artifactId>
             <version>[7.2.0, 7.2.99]</version>
         </dependency>
-<!--springboot 热部署所需-->
+        <!--springboot 热部署所需-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -84,9 +84,9 @@
             <version>0.0.20131108.vaadin1</version>
             <scope>compile</scope>
         </dependency>
-<!--        容联云通讯-短信验证码
-https://github.com/cloopen/java-sms-sdk
--->
+        <!--        容联云通讯-短信验证码
+        https://github.com/cloopen/java-sms-sdk
+        -->
         <dependency>
             <groupId>com.cloopen</groupId>
             <artifactId>java-sms-sdk</artifactId>
@@ -107,5 +107,6 @@ https://github.com/cloopen/java-sms-sdk
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
     </dependencies>
 </project>

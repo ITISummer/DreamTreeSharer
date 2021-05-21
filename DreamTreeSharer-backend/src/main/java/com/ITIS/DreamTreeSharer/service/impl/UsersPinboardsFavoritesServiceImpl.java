@@ -1,7 +1,7 @@
 package com.ITIS.DreamTreeSharer.service.impl;
 
-import com.ITIS.DreamTreeSharer.config.common.Message;
-import com.ITIS.DreamTreeSharer.config.common.StatusCode;
+import com.ITIS.DreamTreeSharer.config.constants.Message;
+import com.ITIS.DreamTreeSharer.config.constants.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.UsersPinboardsDao;
 import com.ITIS.DreamTreeSharer.entity.UsersPinboardsEntity;
 import com.ITIS.DreamTreeSharer.entity.UsersPinboardsFavoritesEntity;

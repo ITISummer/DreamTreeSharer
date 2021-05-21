@@ -38,22 +38,28 @@
     [mybatis-plus 执行有外键约束的多表删除后返回值总是为 0](待解决)
     ============================================================
     删除一个 pinboard，需要连带删除 users_pinboards,users_pinboards_comments,users_pinboards_favorites 中的记录
+    ============================================================
+    设置级联删除，则不需要写那么麻烦，可参考
+    [Navicat for mysql 设置级联](https://blog.csdn.net/ljmin0204/article/details/7662504)
+    [MySql级联删除和更新](https://blog.csdn.net/doupei2006/article/details/7949077)
+    [MySQL多表同时删除方案](https://www.kancloud.cn/curder/mysql/355257)
     -->
     <delete id="deletePinboardById">
-        SET FOREIGN_KEY_CHECKS = 0;
-        DELETE pin.*,up.*,upc.*,upf.*
-        FROM users_pinboards AS up
-        INNER JOIN pinboards as pin
-        ON up.pinboard_id=pin.pinboard_id
-        INNER JOIN users_pinboards_comments as upc
-        ON up.pinboard_id=upc.pinboard_id
-        INNER JOIN users_pinboards_favorites as upf
-        ON up.pinboard_id=upf.pinboard_id
-        <if test="userId!=null and ''!=userId">
-            AND up.user_id=#{userId}
-        </if>
-        AND pin.pinboard_id=#{pinId};
-        SET FOREIGN_KEY_CHECKS = 1;
+<!--        SET FOREIGN_KEY_CHECKS = 0;-->
+<!--        DELETE pin.*,up.*,upc.*,upf.*-->
+<!--        FROM users_pinboards AS up-->
+<!--        INNER JOIN pinboards as pin-->
+<!--        ON up.pinboard_id=pin.pinboard_id-->
+<!--        INNER JOIN users_pinboards_comments as upc-->
+<!--        ON up.pinboard_id=upc.pinboard_id-->
+<!--        INNER JOIN users_pinboards_favorites as upf-->
+<!--        ON up.pinboard_id=upf.pinboard_id-->
+<!--        <if test="userId!=null and ''!=userId">-->
+<!--            AND up.user_id=#{userId}-->
+<!--        </if>-->
+<!--        AND pin.pinboard_id=#{pinId};-->
+<!--        SET FOREIGN_KEY_CHECKS = 1;-->
+            DELETE pin.* FROM pinboards AS pin WHERE pin.pinboard_id=#{pinId}
     </delete>
 
     <!--    [SQL 三表联查](https://blog.csdn.net/qq_34068082/article/details/79974100) -->

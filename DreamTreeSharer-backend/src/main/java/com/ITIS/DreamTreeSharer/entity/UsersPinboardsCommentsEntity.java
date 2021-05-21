@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("users_pinboards_comments")
-@ApiModel(value="UsersPinboardsCommentsEntity对象", description="用户对愿望板的评论记录表")
+@ApiModel(value = "UsersPinboardsCommentsEntity对象", description = "用户对愿望板的评论记录表")
 public class UsersPinboardsCommentsEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

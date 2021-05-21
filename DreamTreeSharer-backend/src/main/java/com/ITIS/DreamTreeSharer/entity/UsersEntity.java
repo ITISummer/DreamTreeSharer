@@ -2,17 +2,18 @@ package com.ITIS.DreamTreeSharer.entity;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.io.Serializable;
-import java.util.Collection;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
 
 /**
  * <p>
@@ -25,7 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("users")
-@ApiModel(value="UsersEntity对象", description="用户表")
+@ApiModel(value = "UsersEntity对象", description = "用户表")
 public class UsersEntity implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -64,6 +65,7 @@ public class UsersEntity implements Serializable, UserDetails {
     private LocalDateTime userCreateTime;
 
     @ApiModelProperty(value = "用户最新登录时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private LocalDateTime userLoginTime;
 
     @ApiModelProperty(value = "用户是否被禁用 1-表示没禁用 0-表示被禁用")

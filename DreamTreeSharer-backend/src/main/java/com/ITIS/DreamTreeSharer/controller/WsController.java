@@ -1,6 +1,6 @@
 package com.ITIS.DreamTreeSharer.controller;
 
-import com.ITIS.DreamTreeSharer.entity.ChatMsg;
+import com.ITIS.DreamTreeSharer.model.ChatMsgModel;
 import com.ITIS.DreamTreeSharer.entity.UsersEntity;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,19 +21,19 @@ import java.time.LocalDateTime;
 @Api(tags = "WsController")
 public class WsController {
 
-	@Autowired
-	private SimpMessagingTemplate simpMessagingTemplate;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
 
-	@MessageMapping("/ws/chat")
-	public void handleMsg(Authentication authentication, ChatMsg chatMsg){
-		UsersEntity user = (UsersEntity) authentication.getPrincipal();
-		// 登录用户名
-		chatMsg.setFrom(user.getUserUsername());
-		// 显示用户名
-		chatMsg.setFormNickName(user.getUserUsername());
-		chatMsg.setDate(LocalDateTime.now());
-		simpMessagingTemplate.convertAndSendToUser(chatMsg.getTo(),"/queue/chat",chatMsg);
-	}
+    @MessageMapping("/ws/chat")
+    public void handleMsg(Authentication authentication, ChatMsgModel chatMsg) {
+        UsersEntity user = (UsersEntity) authentication.getPrincipal();
+        // 登录用户名
+        chatMsg.setFrom(user.getUserUsername());
+        // 显示用户名
+        chatMsg.setFormNickName(user.getUserUsername());
+        chatMsg.setDate(LocalDateTime.now());
+        simpMessagingTemplate.convertAndSendToUser(chatMsg.getTo(), "/queue/chat", chatMsg);
+    }
 
 }
