@@ -25,7 +25,7 @@
 
 <!--    根据关键词查询用户 -->
     <select id="getUserList" resultType="com.ITIS.DreamTreeSharer.entity.UsersEntity">
-        SELECT *
+        SELECT users.user_id,users.user_avatar_url,users.user_username,user_enabled
         FROM users
         WHERE
             users.`user_id` != #{id}

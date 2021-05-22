@@ -13,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
@@ -153,20 +152,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    // [Spring Boot Security HttpFirewall](http://mvpjava.com/spring-boot-security-httpfirewall/)
-    // [security.web.firewall.RequestRejectedException:
-    // The request was rejected because the URL contained a potentially malicious String ";"]
-    // (https://www.cnblogs.com/hetutu-5238/p/12145379.html)
-    /*
-        org.springframework.security.web.firewall.RequestRejectedException:
-        The request was rejected because the URL contained a potentially malicious String "//"
+    /**
+     * 跨域配置
+     * [Springboot 2.4.0跨域配置无效及接口访问报错（解决方法）allowedOrigins cannot contain the special value "*"]
+     * (https://www.cnblogs.com/technicist/p/14466665.html)
+     *
+     * [SpringBoot 优雅解决 ajax 跨域请求](https://juejin.cn/post/6844903954015322126)
      */
-//    @Bean
-//    public HttpFirewall looseHttpFirewall() {
-//        StrictHttpFirewall firewall = new StrictHttpFirewall();
-//        firewall.setAllowedHttpMethods(Arrays.asList("PUT","GET","POST","DELETE"));
-//        firewall.setAllowUrlEncodedSlash(true);
-//        return firewall;
-//    }
 
 }

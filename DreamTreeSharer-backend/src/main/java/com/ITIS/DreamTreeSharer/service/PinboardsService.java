@@ -39,4 +39,12 @@ public interface PinboardsService extends IService<PinboardsEntity> {
      * @return
      */
     CRModel getSharablePinboard();
+
+    /**
+     * 更新愿望卡点赞数
+     * @param pinId
+     * @param likeNum
+     * @return
+     */
+    CRModel updateLikeNum(String pinId, int likeNum);
 }

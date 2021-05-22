@@ -211,7 +211,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     @Override
     public List<UsersEntity> getUserList(String keywords) {
-        return usersDao.getUserList(UsersUtil.getCurrentUser().getUserId(), keywords);
+        String userId = UsersUtil.getCurrentUser().getUserId();
+        return usersDao.getUserList(userId, keywords);
     }
 
     @Override

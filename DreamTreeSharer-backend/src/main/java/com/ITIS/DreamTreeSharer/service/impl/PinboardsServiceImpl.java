@@ -4,11 +4,14 @@ import com.ITIS.DreamTreeSharer.config.constants.Message;
 import com.ITIS.DreamTreeSharer.config.constants.StatusCode;
 import com.ITIS.DreamTreeSharer.dao.PinboardsDao;
 import com.ITIS.DreamTreeSharer.entity.PinboardsEntity;
+import com.ITIS.DreamTreeSharer.entity.UsersPinboardsCommentsEntity;
+import com.ITIS.DreamTreeSharer.entity.UsersPinboardsEntity;
 import com.ITIS.DreamTreeSharer.model.CRModel;
 import com.ITIS.DreamTreeSharer.model.UPModel;
 import com.ITIS.DreamTreeSharer.service.PinboardsService;
 import com.ITIS.DreamTreeSharer.service.UsersPinboardsService;
 import com.ITIS.DreamTreeSharer.utils.UsersUtil;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,7 +32,7 @@ import java.util.UUID;
 public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEntity> implements PinboardsService {
 
     @Autowired
-    PinboardsDao pinboardsDao;
+    PinboardsDao pinDao;
     @Autowired
     UsersPinboardsService usersPinboardsService;
 
@@ -39,7 +42,7 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
     public CRModel addOnePinboard(PinboardsEntity pinboardsEntity) throws Exception {
         String pinboardId = UUID.randomUUID()+"";
         pinboardsEntity.setPinboardId(pinboardId);
-        if (pinboardsDao.insert(pinboardsEntity) == 1) {
+        if (pinDao.insert(pinboardsEntity) == 1) {
             // 得到当前登录的用户 id
             String userId = UsersUtil.getCurrentUser().getUserId();
             if (usersPinboardsService.addOneUsersPinboardsRecord(userId,pinboardId) != 1){
@@ -54,7 +57,7 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
     @Override
     public CRModel getPinboards() {
         String userId = UsersUtil.getCurrentUser().getUserId();
-        List<PinboardsEntity> pinboards = pinboardsDao.getPinboardsByuserId(userId);
+        List<PinboardsEntity> pinboards = pinDao.getPinboardsByuserId(userId);
         if (pinboards != null) {
             return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinboards);
         }
@@ -63,7 +66,7 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
 
     @Override
     public CRModel deleteOnePinboardById(String pinboardId) {
-        int res = pinboardsDao.deletePinboardById(pinboardId);
+        int res = pinDao.deletePinboardById(pinboardId);
         if (res > 0) {
             return new CRModel(StatusCode.SUCCESS,"删除"+Message.SUCCESS,null);
         }
@@ -72,10 +75,17 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
 
     @Override
     public CRModel getSharablePinboard() {
-        List<UPModel> sharablePins = pinboardsDao.getSharablePins();
+        List<UPModel> sharablePins = pinDao.getSharablePins();
         if (sharablePins.size() >= 1) {
             return new CRModel(StatusCode.SUCCESS, Message.SUCCESS,sharablePins);
         }
         return new CRModel(StatusCode.WARNING, Message.WARNING,null);
+    }
+
+    @Override
+    public CRModel updateLikeNum(String pinId, int likeNum) {
+        int res = pinDao.update(null, new UpdateWrapper<PinboardsEntity>().eq("pinboard_id",pinId).set("like_num",likeNum));
+        return res>=1? new CRModel(StatusCode.SUCCESS,"",null):
+                new CRModel(StatusCode.WARNING,"更新点赞"+Message.WARNING,null);
     }
 }

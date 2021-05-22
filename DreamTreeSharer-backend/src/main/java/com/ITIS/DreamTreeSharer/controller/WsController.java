@@ -31,7 +31,7 @@ public class WsController {
         // 登录用户名
         chatMsg.setFrom(user.getUserUsername());
         // 显示用户名
-        chatMsg.setFormNickName(user.getUserUsername());
+        chatMsg.setFromNickName(user.getUserUsername());
         chatMsg.setDate(LocalDateTime.now());
         simpMessagingTemplate.convertAndSendToUser(chatMsg.getTo(), "/queue/chat", chatMsg);
     }

@@ -26,6 +26,6 @@ public class ChatMsgModel {
 	// 发送时间
 	private LocalDateTime date;
 	// 发送者昵称
-	private String formNickName;
+	private String fromNickName;
 
 }

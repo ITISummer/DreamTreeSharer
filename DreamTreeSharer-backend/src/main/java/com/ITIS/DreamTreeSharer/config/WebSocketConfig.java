@@ -68,12 +68,11 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
          * 2.setAllowedOrigins("*")：允许跨域
          * 3.withSockJS():支持socketJS访问
          */
-//		System.out.println("WebSocketConfig->registerStompEndpoints---建立链接前");
-//        registry.addEndpoint("/ws/ep").setAllowedOrigins("localhost:8080/**").withSockJS();
-        registry.addEndpoint("/ws/ep").setAllowedOrigins("*").withSockJS();
-//		registry.addEndpoint("/ws/ep").setAllowedOrigins().withSockJS();
-//		registry.addEndpoint("/ws/ep").withSockJS();
-//		System.out.println("WebSocketConfig->registerStompEndpoints---建立链接后");
+        // 以下方式不可以
+//        registry.addEndpoint("/ws").setAllowedOrigins("*").withSockJS();
+        // 以下具体指明可访问的域名也可以
+//        registry.addEndpoint("/ws/ep").setAllowedOrigins("http://localhost:8080").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 
 
