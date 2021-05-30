@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 @ApiModel(value = "UPCModel", description = "users-pinboards-comments 实体类，用于构建管理员管理评论页面数据")
 public class UPCModel implements Serializable {
     private static final long serialVersionUID = 1L;
+    @ApiModelProperty(value = "评论id")
+    private Integer commentId;
     @ApiModelProperty(value = "评论作者用户名")
     private String commentAuthor;
     @ApiModelProperty(value = "pinboard 作者用户名")

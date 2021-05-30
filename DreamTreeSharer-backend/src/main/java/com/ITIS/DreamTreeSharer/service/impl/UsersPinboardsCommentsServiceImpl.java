@@ -32,23 +32,23 @@ public class UsersPinboardsCommentsServiceImpl extends ServiceImpl<UsersPinboard
     @Override
     public CRModel addOneComment(CommentModel commentModel) {
         String userId = UsersUtil.getCurrentUser().getUserId();
-        int res = upcDao.addOneComment(userId,commentModel);
-        return res == 1?
-                new CRModel(StatusCode.SUCCESS, Message.SUCCESS, commentModel.getCommentId()):
-                new CRModel(StatusCode.WARNING, Message.WARNING, null);
+        int res = upcDao.addOneComment(userId, commentModel);
+        return res == 1 ?
+                new CRModel(StatusCode.SUCCESS, "添加评论" + Message.SUCCESS, commentModel.getCommentId()) :
+                new CRModel(StatusCode.WARNING, "添加评论" + Message.WARNING, null);
     }
 
     @Override
     public CRModel getComments(String pinId, int limit, int offset) {
-        List<CommentModel> res = upcDao.getComments(pinId, limit,offset);
-        return res.size()>0 ? new CRModel(StatusCode.SUCCESS,Message.SUCCESS,res):
-                              new CRModel(StatusCode.WARNING,Message.WARNING,null);
+        List<CommentModel> res = upcDao.getComments(pinId, limit, offset);
+        return res.size() > 0 ? new CRModel(StatusCode.SUCCESS, "", res) :
+                new CRModel(StatusCode.WARNING, "该愿望卡下没有评论！", null);
     }
 
     @Override
-    public CRModel updateLikeNum(int commentId,int likeNum) {
-        int res = upcDao.update(null, new UpdateWrapper<UsersPinboardsCommentsEntity>().eq("upc_id",commentId).set("like_num",likeNum));
-        return res>=1? new CRModel(StatusCode.SUCCESS,Message.SUCCESS,null):
-                       new CRModel(StatusCode.WARNING,Message.WARNING,null);
+    public CRModel updateLikeNum(int commentId, int likeNum) {
+        int res = upcDao.update(null, new UpdateWrapper<UsersPinboardsCommentsEntity>().eq("upc_id", commentId).set("like_num", likeNum));
+        return res >= 1 ? new CRModel(StatusCode.SUCCESS, "", null) :
+                new CRModel(StatusCode.WARNING, "点赞" + Message.WARNING, null);
     }
 }

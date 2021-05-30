@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("users_pinboards")
-@ApiModel(value = "UsersPinboardsEntity对象", description = "用户对愿望板的操作记录表")
+@ApiModel(value = "UsersPinboardsEntity", description = "用户对愿望板的操作记录表")
 public class UsersPinboardsEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -29,13 +29,10 @@ public class UsersPinboardsEntity implements Serializable {
     @ApiModelProperty(value = "用户-愿望板id")
     @TableId
     private String upId;
-
     @ApiModelProperty(value = "用户id")
     private String userId;
-
     @ApiModelProperty(value = "愿望板id")
     private String pinboardId;
-
     @ApiModelProperty(value = "创建愿望板时间")
     private LocalDateTime upCreateTime;
 

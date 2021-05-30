@@ -25,5 +25,6 @@ public interface PinboardsDao extends BaseMapper<PinboardsEntity> {
 
     List<UPModel> getSharablePins();
 
-    List<UPModel> getAllPin();
+    List<UPModel> getAllPin(@Param("currentPage") int currentPage, @Param("size") int size);
+    Integer getAllPinCount();
 }

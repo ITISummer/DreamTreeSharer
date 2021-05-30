@@ -27,10 +27,11 @@ public class QiniuToken {
     /** Secret 写自己的 */
     private static final String SECRET_KEY = "Q59neB4gG-qeciUTstqPUJXMLUiVKUh-mfX8EPbe";
 
-    /** 基础图片空间 写自己的 */
+//    /** 基础图片空间 写自己的 */
 //    public static final String CLOUD_BUCKET = "itisummer-huanan-bucket";
+    /** 基础图片空间 写自己的 */
     public static final String CLOUD_BUCKET = "itisummer-huabei-bucket";
-//    /** 基础空间域名 写自己的 */
+    // 基础空间域名 写自己的
 //    public static final String CLOUD_URL = "qrne6et6u.hn-bkt.clouddn.com";
 
 //    /** 产品空间  写自己的 */
@@ -41,9 +42,6 @@ public class QiniuToken {
     /**
      * Description:简单token类型返回封装
      * @param key 文件名
-     * @return String
-     * @author around
-     * @Date 2021年4月16日16点13分
      */
     public static String getBaseToken(String bucket, String key) {
         Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
@@ -52,10 +50,6 @@ public class QiniuToken {
 
     /**
      * Description:自定义token返回结果
-     * @param key 文件名
-     * @return 返回自定义的 token
-     * @author LCX
-     * @Date 2021年4月16日16点13分
      */
     public static String getCustomToken(String bucket, String key) {
         Auth auth = Auth.create(ACCESS_KEY, SECRET_KEY);
@@ -67,10 +61,6 @@ public class QiniuToken {
 
     /**
      * Description:删除指定文件
-     * @param key 文件名
-     * @return boolean true:成功
-     * @author LCX
-     * @Date 2021年4月16日16点13分
      */
     public static boolean remove(String bucket, String key) {
         //构造一个带指定Zone对象的配置类
@@ -92,9 +82,6 @@ public class QiniuToken {
     /**
      * Description:批量删除文件
      * @param keyList 文件名数组
-     * @return boolean
-     * @author LCX
-     * @Date 2021年4月16日16点13分
      */
     public static boolean remove(String bucket, String[] keyList) {
         //构造一个带指定Zone对象的配置类

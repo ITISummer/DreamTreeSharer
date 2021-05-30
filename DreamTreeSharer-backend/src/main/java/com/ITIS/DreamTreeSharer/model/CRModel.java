@@ -28,28 +28,16 @@ public class CRModel {
 
     /**
      * 成功信息 - [200,300) - 对应成功状态码范围
-     * @param statusCode
-     * @param message
-     * @param obj
-     * @return
      */
     public static CRModel success(Integer statusCode, String message, Object obj) { return new CRModel(statusCode, message, obj); }
     /**
      * 提示信息 - [400,500) - 对应提示状态码范围
-     * @param statusCode
-     * @param message
-     * @param obj
-     * @return
      */
     public static CRModel warning(Integer statusCode, String message, Object obj) {
         return new CRModel(statusCode, message, obj);
     }
     /**
      * 错误信息 - [500,600) - 对应错误状态码范围
-     * @param statusCode
-     * @param message
-     * @param obj
-     * @return
      */
     public static CRModel error(Integer statusCode, String message, Object obj) {
         return new CRModel(statusCode, message, obj);

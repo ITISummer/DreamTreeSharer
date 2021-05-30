@@ -26,16 +26,18 @@ import java.io.IOException;
  * @Date 2021 2021-03-31 1:35 p.m.
  * @Version 1.0
  * 获得 captcha 存入 session 中
+ * [SpringBoot中设置不同的“session”（缓存）过期时间](https://codeleading.com/article/72382055716/)
  **/
 @RestController
 @Api(tags = "CaptchaController")
 public class CaptchaController {
 
     @Autowired
+    RedisUtil redisUtil;
+
+    @Autowired
     private DefaultKaptcha defaultKaptcha;
     Logger logger = LoggerFactory.getLogger(getClass());
-    @Autowired
-    private RedisUtil redisUtil;
     @Autowired
     private UsersService usersService;
 
@@ -56,10 +58,11 @@ public class CaptchaController {
         //获取验证码文本内容
         String text = defaultKaptcha.createText();
         logger.info("验证码:" + text);
-        //将验证码放入到session/redis中
-//        request.getSession().setAttribute("captcha", text);
+//        将验证码放入到session/redis中
+        request.getSession().setAttribute("captcha", text);
+
         // 将验证码放入到 redis 中设置60s过期
-        redisUtil.setKey("captcha",text,60);
+//        redisUtil.setKey(request.getSession().getId(), text, 60);
         //根据验证码文本生成验证码图片
         BufferedImage image = defaultKaptcha.createImage(text);
         //获取响应输出流，输出给用户
@@ -82,13 +85,11 @@ public class CaptchaController {
     }
 
 
-
     @ApiOperation(value = "更新用户邮箱或者手机号前获取验证码")
     @GetMapping("/get-code/{flag}/{emailOrMobile}")
     public CRModel getCode(@PathVariable("flag") String flag, @PathVariable("emailOrMobile") String emailOrMobile) {
         return usersService.getCode(flag, emailOrMobile);
     }
-
 
 
     @ApiOperation(value = "获取短信验证码")

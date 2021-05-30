@@ -14,16 +14,16 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AdminsService extends IService<AdminsEntity> {
     /** 得到所有用户 */
-    CRModel getAllUser();
+    CRModel getAllUser(int currentPage,int size);
 
     /** 得到所有 pin 以及创建者信息 */
-    CRModel getAllPin();
+    CRModel getAllPin(int currentPage,int size);
 
     /** 得到所有 comment 以及提交 comment 的用户信息 */
-    CRModel getAllComment();
+    CRModel getAllComment(int currentPage,int size);
 
     /** 禁用一个用户 */
-    CRModel disableAUsers(String userId);
+    CRModel disableAUser(String userId,boolean enable);
 
     /** 删除一个 pinboard */
     CRModel deleteAPin(String pinId);

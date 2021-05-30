@@ -25,21 +25,21 @@ public class AdminsController {
     private AdminsService adminsService;
 
     @ApiOperation(value = "查询所有用户")
-    @GetMapping("/get-all-user")
-    public CRModel getAllUsers() {
-        return adminsService.getAllUser();
+    @GetMapping("/get-all-user/{currentPage}/{size}")
+    public CRModel getAllUsers(@PathVariable int currentPage,@PathVariable int size) {
+        return adminsService.getAllUser(currentPage,size);
     }
 
     @ApiOperation(value = "禁用用户账户")
-    @PutMapping("/disable-a-user/{userId}")
-    public CRModel disableAUsers(@PathVariable String userId) {
-        return adminsService.disableAUsers(userId);
+    @PutMapping("/disable-a-user/{userId}/{enable}")
+    public CRModel disableAUser(@PathVariable String userId, @PathVariable boolean enable) {
+        return adminsService.disableAUser(userId,enable);
     }
 
     @ApiOperation(value = "查询所有 pinboard ")
-    @GetMapping("/get-all-pin")
-    public CRModel getAllPins() {
-        return adminsService.getAllPin();
+    @GetMapping("/get-all-pin/{currentPage}/{size}")
+    public CRModel getAllPins(@PathVariable int currentPage,@PathVariable int size) {
+        return adminsService.getAllPin(currentPage,size);
     }
 
     @ApiOperation(value = "删除一个 pinboard ")
@@ -49,9 +49,9 @@ public class AdminsController {
     }
 
     @ApiOperation(value = "查询所有pin下的评论以及作者 ")
-    @GetMapping("/get-all-comment")
-    public CRModel getAllComments() {
-        return adminsService.getAllComment();
+    @GetMapping("/get-all-comment/{currentPage}/{size}")
+    public CRModel getAllComments(@PathVariable int currentPage,@PathVariable int size) {
+        return adminsService.getAllComment(currentPage,size);
     }
 
     @ApiOperation(value = "删除一条评论")

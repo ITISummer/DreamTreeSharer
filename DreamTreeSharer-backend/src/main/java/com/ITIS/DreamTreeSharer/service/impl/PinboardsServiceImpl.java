@@ -32,11 +32,14 @@ import java.util.UUID;
 public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEntity> implements PinboardsService {
 
     @Autowired
-    PinboardsDao pinDao;
+    private PinboardsDao pinDao;
     @Autowired
-    UsersPinboardsService usersPinboardsService;
+    private UsersPinboardsService usersPinboardsService;
 
-    //[Spring Boot 中使用 @Transactional 注解配置事务管理](https://blog.csdn.net/nextyu/article/details/78669997)
+    /**
+     * [Spring Boot 中使用 @Transactional 注解配置事务管理]
+     * (https://blog.csdn.net/nextyu/article/details/78669997)
+     */
     @Override
     @Transactional
     public CRModel addOnePinboard(PinboardsEntity pinboardsEntity) throws Exception {
@@ -48,7 +51,7 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
             if (usersPinboardsService.addOneUsersPinboardsRecord(userId,pinboardId) != 1){
                 throw new Exception("PinboardsServiceImpl -> addOnePinboard() -> 插入 pinboard 失败！");
             };
-            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinboardId);
+            return new CRModel(StatusCode.SUCCESS, "添加"+Message.SUCCESS, pinboardId);
         } else {
             return new CRModel(StatusCode.WARNING, Message.WARNING, null);
         }
@@ -59,7 +62,7 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
         String userId = UsersUtil.getCurrentUser().getUserId();
         List<PinboardsEntity> pinboards = pinDao.getPinboardsByuserId(userId);
         if (pinboards != null) {
-            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinboards);
+            return new CRModel(StatusCode.SUCCESS, "", pinboards);
         }
         return new CRModel(StatusCode.WARNING, Message.WARNING, null);
     }
@@ -77,9 +80,9 @@ public class PinboardsServiceImpl extends ServiceImpl<PinboardsDao, PinboardsEnt
     public CRModel getSharablePinboard() {
         List<UPModel> sharablePins = pinDao.getSharablePins();
         if (sharablePins.size() >= 1) {
-            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS,sharablePins);
+            return new CRModel(StatusCode.SUCCESS, "",sharablePins);
         }
-        return new CRModel(StatusCode.WARNING, Message.WARNING,null);
+        return new CRModel(StatusCode.WARNING, "主页加载"+Message.WARNING,null);
     }
 
     @Override

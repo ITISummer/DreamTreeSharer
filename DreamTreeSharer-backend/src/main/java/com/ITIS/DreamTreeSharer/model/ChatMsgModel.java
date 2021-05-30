@@ -1,5 +1,6 @@
 package com.ITIS.DreamTreeSharer.model;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -17,15 +18,15 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 public class ChatMsgModel {
 
-	// 发送者
+	@ApiModelProperty(value = "发送者")
 	private String from;
-	// 接收者
+	@ApiModelProperty(value = "接收者")
 	private String to;
-	// 发送内容
+	@ApiModelProperty(value = "发送内容")
 	private String content;
-	// 发送时间
+	@ApiModelProperty(value = "发送时间")
 	private LocalDateTime date;
-	// 发送者昵称
+	@ApiModelProperty(value = "发送者昵称")
 	private String fromNickName;
 
 }

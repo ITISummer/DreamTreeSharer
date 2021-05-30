@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -61,18 +62,19 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     private final static String EMAIL = "email";
     private final static String MOBILE = "mobile";
-
 //    [java 泛型详解-绝对是对泛型方法讲解最详细的，没有之一](https://blog.csdn.net/qq_24084925/article/details/68491132)
 //    [【工作记录】java方法返回多个值（用法思考、比较）](https://blog.csdn.net/zzh920625/article/details/80462379)
 //    本来想使用泛型来简化开发的，但是越弄越复杂，不过还是学到了东西，以前从没有写过泛型！
-//    private <T> Map<String,Object> initSearch(T t) {
-//        QueryWrapper<T> wrapper = new QueryWrapper<>();
-//        IPage<T> page = new Page<>();
-//        Map<String,Object> result =  new HashMap<String,Object>();
-//        result.put("wrapper",wrapper);
-//        result.put("page",page);
-//        return result;
-//    }
+    /*
+    private <T> Map<String,Object> initSearch(T t) {
+        QueryWrapper<T> wrapper = new QueryWrapper<>();
+        IPage<T> page = new Page<>();
+        Map<String,Object> result =  new HashMap<String,Object>();
+        result.put("wrapper",wrapper);
+        result.put("page",page);
+        return result;
+    }
+    */
 
     /*
     [mybatis-plus模糊查询](https://www.jianshu.com/p/36039f2ef4d6)
@@ -82,8 +84,8 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
      */
     @Override
     public CRModel fuzzySearch(String flag, String search, int size, int currentPage) {
-//Map<String,Object> result = initSearch(UsersEntity.class);
-//QueryWrapper<UsersEntity> wrapper = (QueryWrapper<UsersEntity>) result.get("wrapper");
+        //Map<String,Object> result = initSearch(UsersEntity.class);
+        //QueryWrapper<UsersEntity> wrapper = (QueryWrapper<UsersEntity>) result.get("wrapper");
         switch (flag) {
             //根据用户名进行模糊分页查询
             case "1": {
@@ -92,7 +94,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
                 long count = usersDao.selectCount(wrapper);
                 IPage<UsersEntity> page = new Page<>(currentPage, size, count);
                 page.setTotal(count);
-                return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, usersDao.selectPage(page, wrapper));
+                return new CRModel(StatusCode.SUCCESS, "", usersDao.selectPage(page, wrapper));
             }
             //根据pin类型进行模糊分页查询
             case "2": {
@@ -101,7 +103,7 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
                 long count = pinsDao.selectCount(wrapper);
                 IPage<PinboardsEntity> page = new Page<>(currentPage, size, count);
                 page.setTotal(count);
-                return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinsDao.selectPage(page, wrapper));
+                return new CRModel(StatusCode.SUCCESS, "", pinsDao.selectPage(page, wrapper));
             }
             //根据pin标题进行模糊分页查询
             case "3": {
@@ -110,10 +112,10 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
                 long count = pinsDao.selectCount(wrapper);
                 IPage<PinboardsEntity> page = new Page<>(currentPage, size, count);
                 page.setTotal(count);
-                return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, pinsDao.selectPage(page, wrapper));
+                return new CRModel(StatusCode.SUCCESS, "", pinsDao.selectPage(page, wrapper));
             }
         }
-        return new CRModel(StatusCode.WARNING, Message.WARNING, null);
+        return new CRModel(StatusCode.WARNING, "搜索" + Message.WARNING, null);
     }
 
 
@@ -121,22 +123,20 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
     public CRModel updateAvatar(String newAvatarUrl) {
         String userId = UsersUtil.getCurrentUser().getUserId();
         if (usersDao.update(null, new UpdateWrapper<UsersEntity>().eq("user_id", userId).set("user_avatar_url", newAvatarUrl)) == 1) {
-            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, null);
+            return new CRModel(StatusCode.SUCCESS, "更新头像" + Message.SUCCESS, null);
         }
         return new CRModel(StatusCode.WARNING, "更新头像" + Message.WARNING, null);
     }
 
-
     /**
-     * [mybatis-plus update 更新操作](https://blog.csdn.net/chenglc1612/article/details/107279142)
-     * @param pwd
-     * @return
+     * [mybatis-plus update 更新操作]
+     * (https://blog.csdn.net/chenglc1612/article/details/107279142)
      */
     @Override
     public CRModel updatePwd(String pwd) {
         pwd = MD5.md5Encrypt(pwd);
         if (usersDao.update(null, new UpdateWrapper<UsersEntity>().eq("user_id", UsersUtil.getCurrentUser().getUserId()).set("user_password", pwd)) == 1) {
-            return new CRModel(StatusCode.SUCCESS, Message.SUCCESS, null);
+            return new CRModel(StatusCode.SUCCESS, "更新密码" + Message.SUCCESS, null);
         }
         return new CRModel(StatusCode.WARNING, "更新密码" + Message.WARNING, null);
     }
@@ -156,9 +156,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 发送邮箱验证码
-     *
-     * @param email
-     * @return
      */
     public CRModel getEmailCode(String email) {
         // 校验邮箱是否已被注册
@@ -175,9 +172,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 发送短信验证码
-     *
-     * @param phone
-     * @return
      */
     @Override
     public CRModel getSmsCode(String phone) {
@@ -210,9 +204,14 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
 
     @Override
-    public List<UsersEntity> getUserList(String keywords) {
+    public CRModel getUserList(String keywords) {
         String userId = UsersUtil.getCurrentUser().getUserId();
-        return usersDao.getUserList(userId, keywords);
+        List<UsersEntity> users = usersDao.getUserList(userId, keywords);
+        if (users != null) {
+            return new CRModel(StatusCode.SUCCESS, "", users);
+        } else {
+            return new CRModel(StatusCode.WARNING, Message.WAR_NOT_FOUND_USER, null);
+        }
     }
 
     @Override
@@ -226,9 +225,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 添加一个用户
-     *
-     * @param usersModel
-     * @return
      */
     @Override
     public CRModel addOneUser(UsersModel usersModel) {
@@ -251,8 +247,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 生成短信验证随机码
-     *
-     * @return
      */
     private String randomSmsCode() {
         // 100000~999999
@@ -264,19 +258,16 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 登陆后返回 token
-     *
-     * @param usersModel
-     * @param request
-     * @return 前端输入用户名和密码，后台查数据库判断用户名和密码是否正确，
+     * 前端输入用户名和密码，后台查数据库判断用户名和密码是否正确，
      * 如果正确则生成 jwt token 返回给前端，后面的每一次请求都会携带此 jwt token，
      * 在每一次前端发起请求前都会拦截请求进行 token 是否有效的验证；
      * 否则提示继续输入。
      */
     @Override
-    public CRModel login(UsersModel usersModel) {
+    public CRModel login(UsersModel usersModel, HttpServletRequest request) {
         //取出放入session的验证码并判断验证码是否正确 - 这里的 captcha 字段要和前端传递的字段一样
-        String captchaCode = (String) redisUtil.getValue("captcha");
-        System.out.println(captchaCode);
+        String captchaCode = (String) request.getSession().getAttribute("captcha");
+//        String captchaCode = redisUtil.getValue(request.getSession().getId());
         if (captchaCode == null) {
             return CRModel.warning(StatusCode.WARNING, "请重新刷新生成验证码！", null);
         }
@@ -285,12 +276,12 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         }
         //获取登录信息
         UserDetails userDetails = userDetailsService.loadUserByUsername(usersModel.getUsername());
-//        if (null == userDetails || !passwordEncoder.matches(password, userDetails.getPassword())) {
-        if (null == userDetails || !userDetails.getPassword().equals(MD5.md5Encrypt(usersModel.getPassword()))) {
-            return CRModel.warning(StatusCode.WARNING, Message.WAR_LOGIN_INVALID_USERNAME_PASSWORD, null);
-        }
-        if (!userDetails.isEnabled()) {
+        if (null == userDetails || !userDetails.isEnabled()) {
             return CRModel.warning(StatusCode.WARNING, Message.WAR_IS_FORBIDDEN, null);
+        }
+//        if (null == userDetails || !passwordEncoder.matches(password, userDetails.getPassword())) {
+        if ( !userDetails.getPassword().equals(MD5.md5Encrypt(usersModel.getPassword()))) {
+            return CRModel.warning(StatusCode.WARNING, Message.WAR_LOGIN_INVALID_USERNAME_PASSWORD, null);
         }
         // 更新 security 登录用户对象
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -300,14 +291,11 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token", token);
         tokenMap.put("tokenHead", tokenHead);
-        return CRModel.success(StatusCode.SUCCESS, Message.SUCCESS, tokenMap);
+        return CRModel.success(StatusCode.SUCCESS, "登录"+Message.SUCCESS, tokenMap);
     }
 
     /**
      * 根据用户名获取用户信息
-     *
-     * @param username
-     * @return
      */
     @Override
     public UsersEntity getCurrentUserInfo(String username) {
@@ -319,9 +307,6 @@ public class UsersServiceImpl extends ServiceImpl<UsersDao, UsersEntity> impleme
 
     /**
      * 根据用户名获取用户信息
-     *
-     * @param username
-     * @return
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

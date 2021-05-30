@@ -13,16 +13,11 @@ import io.swagger.annotations.ApiModelProperty;
 @ApiModel(value = "Message", description = "系统提示信息")
 public class Message {
     /*----------------------------成功消息---------------------------*/
-    @ApiModelProperty(value = "处理成功！")
     public static final String SUCCESS = "成功！";
-    @ApiModelProperty(value = "注销成功！")
     public static final String SUC_LOGOUT = "注销成功！";
     /*----------------------------警告消息---------------------------*/
-    @ApiModelProperty(value = "处理失败！")
     public static final String WARNING = "失败！";
-    @ApiModelProperty(value = "用户名或密码不正确！")
     public static final String WAR_LOGIN_INVALID_USERNAME_PASSWORD = "用户名或密码不正确！";
-    @ApiModelProperty(value = "账户被禁用，请联系管理员！")
     public static final String WAR_IS_FORBIDDEN = "账户被禁用，请联系管理员！";
     public static final String WAR_NO_PERMISSION = "权限不够！";
     public static final String WAR_NOT_LOGIN = "尚未登陆，请先登录~~~";

@@ -44,8 +44,6 @@ public class JwtTokenUtil {
 
     /**
      * 根据用户信息生成加密 Token - 加密
-     * @param userDetails - security 框架中类
-     * @return
      */
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
@@ -59,8 +57,6 @@ public class JwtTokenUtil {
     /**
      * 根据荷载生成 JWT Token - 加密
      * 荷载包含荷载持有人，荷载创建时间
-     * @param claims
-     * @return
      */
     private String generateToken(Map<String, Object> claims) {
         return Jwts.builder()
@@ -72,7 +68,6 @@ public class JwtTokenUtil {
 
     /**
      * 生成token失效时间 - 设置 token 存活时间
-     * @return
      */
     private Date generateExpirationDate() {
         //失效时间 =  当前系统的时间 + 配置的有效时间 10h -> 毫秒
@@ -81,8 +76,6 @@ public class JwtTokenUtil {
 
     /**
      * 从token中获取用户名 - 解密
-     * @param token
-     * @return
      */
     public String getUserNameFromToken(String token) {
         String username;
@@ -99,8 +92,6 @@ public class JwtTokenUtil {
 
     /**
      * 从token中获取荷载 - 解密
-     * @param token
-     * @return
      */
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
@@ -117,9 +108,6 @@ public class JwtTokenUtil {
 
     /**
      * 判断token是否有效
-     * @param token
-     * @param userDetails
-     * @return
      */
     public boolean validateToken(String token, UserDetails userDetails) {
         /**
@@ -133,8 +121,6 @@ public class JwtTokenUtil {
 
     /**
      * 判断token是否过期
-     * @param token
-     * @return
      */
     private boolean isTokenExpired(String token) {
         /**
@@ -148,8 +134,6 @@ public class JwtTokenUtil {
 
     /**
      * 从荷载里面获取失效时间
-     * @param token
-     * @return
      */
     private Date getExpiredDateFromToken(String token) {
         Claims claims = getClaimsFromToken(token);
@@ -159,8 +143,6 @@ public class JwtTokenUtil {
 
     /**
      * 判断token是否可以被刷新
-     * @param token
-     * @return
      */
     public boolean canRefresh(String token) {
         //如果token已经过期则可以刷新
@@ -169,13 +151,9 @@ public class JwtTokenUtil {
 
     /**
      * 刷新token
-     * @param token
-     * @return
      */
     public String refreshToken(String token) {
-        /**
-         * 刷新token只需要将token的生成时间改成当前时间，然后再重新生成token即可。
-         */
+        //刷新token只需要将token的生成时间改成当前时间，然后再重新生成token即可。
         Claims claims = getClaimsFromToken(token);
         claims.put(CLAIM_KEY_CREATED, new Date());
         return generateToken(claims);

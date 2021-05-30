@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("users_pinboards_favorites")
-@ApiModel(value = "UsersPinboardsFavoritesEntity对象", description = "用户对愿望板的收藏记录表")
+@ApiModel(value = "UsersPinboardsFavoritesEntity", description = "用户对愿望板的收藏记录表")
 public class UsersPinboardsFavoritesEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -31,13 +31,10 @@ public class UsersPinboardsFavoritesEntity implements Serializable {
     @ApiModelProperty(value = "用户-愿望板-收藏id")
     @TableId(type = IdType.AUTO)
     private Integer upfId;
-
     @ApiModelProperty(value = "用户id")
     private String userId;
-
     @ApiModelProperty(value = "愿望板id")
     private String pinboardId;
-
     @ApiModelProperty(value = "创建愿望板时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private LocalDateTime upCreateTime;

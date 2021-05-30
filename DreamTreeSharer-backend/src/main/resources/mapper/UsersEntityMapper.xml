@@ -25,14 +25,14 @@
 
 <!--    根据关键词查询用户 -->
     <select id="getUserList" resultType="com.ITIS.DreamTreeSharer.entity.UsersEntity">
-        SELECT users.user_id,users.user_avatar_url,users.user_username,user_enabled
-        FROM users
+        SELECT u.user_id,u.user_avatar_url,u.user_username,u.user_enabled
+        FROM users As u
         WHERE
-            users.`user_id` != #{id}
+            u.`user_id` != #{id}
             <if test = "null != keywords and '' != keywords">
-                AND users.`user_username` LIKE CONCAT( '%', #{keywords}, '%' )
+                AND u.`user_username` LIKE CONCAT( '%', #{keywords}, '%' )
             </if>
-        ORDER BY users.`user_username`
+        ORDER BY u.`user_username`
     </select>
 
     <!--    更新用户邮箱

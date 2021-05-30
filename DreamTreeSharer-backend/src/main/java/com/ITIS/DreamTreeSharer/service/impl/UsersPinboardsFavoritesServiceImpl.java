@@ -38,7 +38,7 @@ public class UsersPinboardsFavoritesServiceImpl extends ServiceImpl<UsersPinboar
         String userId = UsersUtil.getCurrentUser().getUserId();
         List<UPModel> favorites = upfDao.getFavoritesById(userId);
         if (favorites != null) {
-            return new CRModel(StatusCode.SUCCESS,Message.SUCCESS,favorites);
+            return new CRModel(StatusCode.SUCCESS,"",favorites);
         } else {
             return new CRModel(StatusCode.WARNING,"收藏夹为空！",null);
         }
@@ -52,7 +52,7 @@ public class UsersPinboardsFavoritesServiceImpl extends ServiceImpl<UsersPinboar
         // 判断用户是否已经对该 pin 进行了收藏和用户收藏的是不是自己的
         String userId = UsersUtil.getCurrentUser().getUserId();
         if (upDao.selectOne(new QueryWrapper<UsersPinboardsEntity>().eq("user_id", userId).eq("pinboard_id", pinId)) == null) {
-            if (upfDao.selectOne(new QueryWrapper<UsersPinboardsFavoritesEntity>().eq("user_id", userId)) == null) {
+            if (upfDao.selectOne(new QueryWrapper<UsersPinboardsFavoritesEntity>().eq("user_id",userId).eq("pinboard_id", pinId)) == null) {
                 UsersPinboardsFavoritesEntity upfEntity = new UsersPinboardsFavoritesEntity();
                 upfEntity.setUserId(userId);
                 upfEntity.setPinboardId(pinId);

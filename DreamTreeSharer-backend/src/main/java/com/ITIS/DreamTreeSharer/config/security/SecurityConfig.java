@@ -140,9 +140,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/favicon.icon",
                 "/logout",
                 "/captcha",
-                "/get-all-user",
-                "/get-all-pin",
-                "/get-all-comment"
+                // 管理员操作放行
+                "/get-all-user/**",
+                "/get-all-pin/**",
+                "/get-all-comment/**",
+                "/disable-a-user/**",
+                "/delete-a-pin/**",
+                "/delete-a-comment/**"
         );
     }
 
@@ -156,7 +160,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * 跨域配置
      * [Springboot 2.4.0跨域配置无效及接口访问报错（解决方法）allowedOrigins cannot contain the special value "*"]
      * (https://www.cnblogs.com/technicist/p/14466665.html)
-     *
      * [SpringBoot 优雅解决 ajax 跨域请求](https://juejin.cn/post/6844903954015322126)
      */
 

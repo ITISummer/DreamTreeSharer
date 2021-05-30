@@ -15,9 +15,18 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface UsersPinboardsCommentsService extends IService<UsersPinboardsCommentsEntity> {
 
+    /**
+     * 添加一条评论
+     */
     CRModel addOneComment(CommentModel commentModel);
 
+    /**
+     * 分页获取评论
+     */
     CRModel getComments(String pinId, int limit, int offset);
 
+    /**
+     * 更新评论点赞量
+     */
     CRModel updateLikeNum(int commentId,int likeNum);
 }

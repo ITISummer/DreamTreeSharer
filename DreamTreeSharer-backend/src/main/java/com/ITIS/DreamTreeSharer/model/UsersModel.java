@@ -23,15 +23,15 @@ public class UsersModel implements Serializable{
     private static final long serialVersionUID = 1L;
     @ApiModelProperty(value = "jwt token")
     private String jwtToken;
-    /* 公共字段 */
+//    公共字段
     @ApiModelProperty(value = "登录用户名", required = true)
     private String username;
     @ApiModelProperty(value = "登录密码", required = true)
     private String password;
     @ApiModelProperty(value = "登录验证码")
-    /* 用户登录所需字段 */
+//    用户登录所需字段
     private String captcha;
-    /* 用户注册所需字段 */
+//    用户注册所需字段
     private String phone;
     private String smsCode;
 }

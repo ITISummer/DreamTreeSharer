@@ -21,9 +21,7 @@ public class EmailUtil {
 
     @Value("${spring.mail.username}")
     private String from;
-    /**
-     * 发送邮件的 api
-     */
+    // 发送邮件的 api
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
@@ -31,10 +29,6 @@ public class EmailUtil {
 
     /**
      * 发送邮件
-     *
-     * @param email
-     * @param code
-     * @return
      */
     public boolean sendSimpleEmail(String email, String code) {
         // 发送邮件前检验redis中是否存在键值对
@@ -46,7 +40,7 @@ public class EmailUtil {
             emailMessage.setTo(email);
             emailMessage.setSubject("【ITIS】邮箱更新通知");
             emailMessage.setText("您正在申请更新邮箱，请尽快输入以下验证码：" + code + " 进行更新邮箱验证！该验证码五分钟内有效！");
-//        String token = GenerateTokenUtil.getToken(email);
+            //String token = GenerateTokenUtil.getToken(email);
             redisUtil.setKey(email, code, 300);
             javaMailSender.send(emailMessage);
         }

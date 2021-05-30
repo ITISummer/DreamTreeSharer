@@ -25,5 +25,6 @@ public interface UsersPinboardsCommentsDao extends BaseMapper<UsersPinboardsComm
 
     List<CommentModel> getComments(@Param("pinId") String pinId, @Param("limit") int limit, @Param("offset") int offset);
 
-    List<UPCModel> getAllComment();
+    List<UPCModel> getAllComment(@Param("currentPage") int currentPage, @Param("size") int size);
+    Integer getAllCommentCount();
 }

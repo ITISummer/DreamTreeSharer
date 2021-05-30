@@ -17,18 +17,13 @@ import java.util.List;
  */
 @Repository
 public interface UsersDao extends BaseMapper<UsersEntity> {
-/**
+	/**
 	 * 根据关键词获取用户列表
-	 * @param keywords
-	 * @return
 	 */
 	List<UsersEntity> getUserList(@Param("id") String id, @Param("keywords") String keywords);
 
 	/**
-	 * 更新用户邮箱
-	 * @param id
-	 * @param emailOrMobile
-	 * @return
+	 * 更新用户邮箱或者手机号
 	 */
 	int updateEmailOrMobile(@Param("id") String id, @Param("flag") String flag, @Param("emailOrMobile") String emailOrMobile);
 }

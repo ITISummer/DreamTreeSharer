@@ -26,51 +26,37 @@ import java.util.Collection;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @TableName("users")
-@ApiModel(value = "UsersEntity对象", description = "用户表")
+@ApiModel(value = "UsersEntity", description = "用户表")
 public class UsersEntity implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
-//    @ApiModelProperty(value = "jwt token")
-//    private String jwtToken;
 
     @TableId
     @ApiModelProperty(value = "用户id")
     private String userId;
-
     @ApiModelProperty(value = "用户名")
     private String userUsername;
-
     @ApiModelProperty(value = "用户登录密码")
     private String userPassword;
-
     @ApiModelProperty(value = "用户性别")
     private String userSex;
-
     @ApiModelProperty(value = "用户生日")
     private LocalDate userBirthday;
-
     @ApiModelProperty(value = "用户自定义描述")
     private String userDescription;
-
     @ApiModelProperty(value = "用户头像地址")
     private String userAvatarUrl;
-
     @ApiModelProperty(value = "用户手机号")
     private String userPhone;
-
     @ApiModelProperty(value = "用户邮箱")
     private String userEmail;
-
     @ApiModelProperty(value = "创建用户时间")
     private LocalDateTime userCreateTime;
-
     @ApiModelProperty(value = "用户最新登录时间")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Shanghai")
     private LocalDateTime userLoginTime;
-
     @ApiModelProperty(value = "用户是否被禁用 1-表示没禁用 0-表示被禁用")
     private Boolean userEnabled;
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

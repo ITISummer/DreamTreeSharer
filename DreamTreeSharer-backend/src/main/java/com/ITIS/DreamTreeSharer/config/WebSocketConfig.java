@@ -43,8 +43,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     /**
      * 配置消息代理
-     *
-     * @param registry
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
@@ -58,8 +56,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
      * 也就是我们配置websocket的服务地址，并且可以指定是否使用socketJS
      * STOMP是一个在底层WebSocket上运行的子协议。
      * [vue、springboot集成websocket跨域问题解决](https://blog.csdn.net/xiaoxiangzi520/article/details/106628992)
-     *
-     * @param registry
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -79,7 +75,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     /**
      * 输入通道参数配置
      * 防止 jwt 拦截器拦截所需配置
-     * @param registration
      */
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {

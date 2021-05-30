@@ -22,12 +22,13 @@ import java.io.PrintWriter;
  */
 @Component
 public class RestfulAuthorizationEntryPoint implements AuthenticationEntryPoint {
+
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException{
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
         PrintWriter out = response.getWriter();
-        CRModel model = CRModel.warning(StatusCode.WAR_USER_NOT_LOGIN,Message.WAR_NOT_LOGIN,null);
+        CRModel model = CRModel.warning(StatusCode.WAR_USER_NOT_LOGIN, Message.WAR_NOT_LOGIN, null);
         out.write(new ObjectMapper().writeValueAsString(model));
         out.flush();
         out.close();

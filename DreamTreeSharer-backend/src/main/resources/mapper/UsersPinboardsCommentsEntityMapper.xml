@@ -60,11 +60,13 @@ users(创建者) pinboards(梦卡) users(评论者) users_pinboards_comments(评
         pin.pinboard_content,
         pin.pinboard_bgimg_url,
         cc.`comment`,
+        cc.comment_id,
         cc.up_create_time,
         cc.like_num
         FROM(
         SELECT up.user_id AS pin_author,
         upc.user_id AS comment_author,
+        upc.upc_id AS comment_id,
         upc.pinboard_id,
         upc.`comment`,
         upc.up_create_time,
@@ -74,5 +76,22 @@ users(创建者) pinboards(梦卡) users(评论者) users_pinboards_comments(评
         INNER JOIN users AS u1 ON u1.user_id=cc.pin_author
         INNER JOIN users AS u2 ON u2.user_id=cc.comment_author
         INNER JOIN pinboards AS pin ON pin.pinboard_id=cc.pinboard_id
+        LIMIT #{size} OFFSET #{currentPage}
+    </select>
+    <select id="getAllCommentCount" resultType="java.lang.Integer">
+        SELECT
+            count(*)
+        FROM(
+                SELECT up.user_id AS pin_author,
+                       upc.user_id AS comment_author,
+                       upc.pinboard_id,
+                       upc.`comment`,
+                       upc.up_create_time,
+                       upc.like_num
+                FROM users_pinboards AS up
+                         INNER JOIN users_pinboards_comments AS upc ON up.pinboard_id=upc.pinboard_id) as cc
+                INNER JOIN users AS u1 ON u1.user_id=cc.pin_author
+                INNER JOIN users AS u2 ON u2.user_id=cc.comment_author
+                INNER JOIN pinboards AS pin ON pin.pinboard_id=cc.pinboard_id
     </select>
 </mapper>

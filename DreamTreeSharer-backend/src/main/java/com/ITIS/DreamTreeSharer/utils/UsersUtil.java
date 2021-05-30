@@ -12,8 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class UsersUtil {
     /**
 	 * 获取当前登录操作员
-	 *
-	 * @return
 	 */
 	public static UsersEntity getCurrentUser() {
 		return (UsersEntity) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
